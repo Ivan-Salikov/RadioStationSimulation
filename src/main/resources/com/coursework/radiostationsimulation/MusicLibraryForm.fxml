@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -41,7 +42,7 @@
       </Label>
       <HBox alignment="CENTER_LEFT" spacing="50.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.vgrow="ALWAYS">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="32.0" prefWidth="149.0" text="Добавить" textAlignment="CENTER">
+            <Button fx:id="addNewMusicTrack" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="32.0" prefWidth="149.0" text="Добавить" textAlignment="CENTER">
                <padding>
                   <Insets bottom="5.0" />
                </padding>
@@ -49,7 +50,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Поиск" textAlignment="CENTER">
+            <Button fx:id="searchMusicTrack" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Поиск" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font></Button>
@@ -61,11 +62,24 @@
             <Insets bottom="10.0" top="5.0" />
          </padding>
       </HBox>
-      <TableView GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="7" GridPane.vgrow="ALWAYS" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <TableView fx:id="musicLibraryTable" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="7" GridPane.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="musicTrackNameColumn" editable="false" prefWidth="80.79998624324799" text="Название" />
+            <TableColumn fx:id="musicTrackGenreColumn" editable="false" prefWidth="73.59989166259766" text="Жанр" />
+            <TableColumn fx:id="musicTrackAuthorColumn" editable="false" prefWidth="83.20001220703125" text="Автор" />
+            <TableColumn fx:id="musicTrackArtistColumn" editable="false" prefWidth="82.39996337890625" text="Исполнитель" />
+            <TableColumn fx:id="musicTrackAlbumColumn" editable="false" prefWidth="50.39996337890625" text="Альбом" />
+            <TableColumn fx:id="musicTrackReleaseDateColumn" editable="false" prefWidth="96.79998779296875" text="Год выпуска" />
+            <TableColumn fx:id="musicTrackDurationColumn" editable="false" prefWidth="75.0" text="Длительность" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy></TableView>
+      <Button fx:id="deleteMusicTrack" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <font>
             <Font size="14.0" />
-         </font></Button>
+         </font>
+      </Button>
       <HBox alignment="CENTER_LEFT" spacing="45.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
          <children>
             <Label text="Название:">
@@ -73,7 +87,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="musicTrackName" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="14.0" />
                </font>
@@ -87,7 +101,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS" />
+            <ComboBox fx:id="musicTrackGenre" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="76.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
@@ -97,7 +111,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="musicTrackAuthor" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="14.0" />
                </font>
@@ -111,7 +125,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="musicTrackArtist" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="14.0" />
                </font>
@@ -125,7 +139,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="musicTrackAlbum" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="14.0" />
                </font>
@@ -139,7 +153,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <DatePicker prefHeight="30.0" prefWidth="194.0" promptText="дд.мм.гггг" HBox.hgrow="ALWAYS" />
+            <DatePicker fx:id="musicTrackReleaseDate" prefHeight="30.0" prefWidth="194.0" promptText="дд.мм.гггг" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
@@ -149,7 +163,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Spinner prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS" />
+            <Spinner fx:id="musicTrackDuration" prefHeight="30.0" prefWidth="194.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>
