@@ -4,7 +4,6 @@ import com.coursework.radiostationsimulation.models.Genre;
 import com.coursework.radiostationsimulation.models.MusicLibrary;
 import com.coursework.radiostationsimulation.models.MusicTrack;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -131,12 +130,22 @@ public class MusicLibraryFormController implements Initializable {
         int duration = musicTrackDuration.getValue();
 
         if (title.isEmpty() || genre == null || author.isEmpty() || artist.isEmpty() || album.isEmpty()) {
-            showAlert("Ошибка", "Неполный ввод", "Заполните все обязательные поля.");
+            showAlert("Ошибка Ввода", "Неполный ввод", "Заполните все обязательные поля.");
         }
         else {
             MusicTrack newTrack = new MusicTrack(title, genre, author, artist, album, releaseDate, duration);
             musicTracks.addMusicTrack(newTrack);
             clearFields();
+        }
+    }
+
+    public void deleteSelectedTrack() {
+        MusicTrack selectedTrack = musicLibraryTable.getSelectionModel().getSelectedItem();
+        if (selectedTrack != null) {
+            musicTracks.removeMusicTrack(selectedTrack);
+        }
+        else {
+            showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
         }
     }
 

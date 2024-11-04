@@ -75,7 +75,7 @@
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy></TableView>
-      <Button fx:id="deleteMusicTrack" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Button fx:id="deleteMusicTrack" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteSelectedTrack" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <font>
             <Font size="14.0" />
          </font>

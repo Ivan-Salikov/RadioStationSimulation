@@ -18,6 +18,7 @@ public class MusicLibrary {
 
     // Удаление трека из списка
     public void removeMusicTrack(MusicTrack track) {
+        musicTracks.remove(track);
     }
 
     // Получение всех треков
