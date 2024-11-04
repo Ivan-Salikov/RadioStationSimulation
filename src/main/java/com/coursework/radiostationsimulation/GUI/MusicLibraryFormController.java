@@ -1,6 +1,7 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.Genre;
+import com.coursework.radiostationsimulation.models.MusicLibrary;
 import com.coursework.radiostationsimulation.models.MusicTrack;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,12 +54,12 @@ public class MusicLibraryFormController implements Initializable {
     @FXML
     private Spinner<Integer> musicTrackDuration;
 
-    private ObservableList<MusicTrack> musicTracks;
+    private MusicLibrary musicTracks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Инициализация списка треков
-        musicTracks = FXCollections.observableArrayList();
+        musicTracks = new MusicLibrary();
 
         // Привязка столбцов таблицы к свойствам класса MusicTrack
         musicTrackNameColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -117,7 +118,7 @@ public class MusicLibraryFormController implements Initializable {
             }
         });
 
-        musicLibraryTable.setItems(musicTracks);
+        musicLibraryTable.setItems(musicTracks.getMusicTracks());
     }
 
     public void addNewTrack() {
@@ -134,7 +135,7 @@ public class MusicLibraryFormController implements Initializable {
         }
         else {
             MusicTrack newTrack = new MusicTrack(title, genre, author, artist, album, releaseDate, duration);
-            musicTracks.add(newTrack);
+            musicTracks.addMusicTrack(newTrack);
             clearFields();
         }
     }
