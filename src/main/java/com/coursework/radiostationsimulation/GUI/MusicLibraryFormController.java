@@ -1,10 +1,13 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.Genre;
+import com.coursework.radiostationsimulation.models.MusicTrack;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -19,21 +22,21 @@ public class MusicLibraryFormController implements Initializable {
     private Button searchMusicTrack;
 
     @FXML
-    private TableView<?> musicLibraryTable;
+    private TableView<MusicTrack> musicLibraryTable;
     @FXML
-    private TableColumn<?, ?> musicTrackNameColumn;
+    private TableColumn<MusicTrack, String> musicTrackNameColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackGenreColumn;
+    private TableColumn<MusicTrack, Genre> musicTrackGenreColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackAuthorColumn;
+    private TableColumn<MusicTrack, String> musicTrackAuthorColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackArtistColumn;
+    private TableColumn<MusicTrack, String> musicTrackArtistColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackAlbumColumn;
+    private TableColumn<MusicTrack, String> musicTrackAlbumColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackReleaseDateColumn;
+    private TableColumn<MusicTrack, LocalDate> musicTrackReleaseDateColumn;
     @FXML
-    private TableColumn<?, ?> musicTrackDurationColumn;
+    private TableColumn<MusicTrack, Integer> musicTrackDurationColumn;
 
     @FXML
     private TextField musicTrackName;
@@ -50,8 +53,22 @@ public class MusicLibraryFormController implements Initializable {
     @FXML
     private Spinner<Integer> musicTrackDuration;
 
+    private ObservableList<MusicTrack> musicTracks;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Инициализация списка треков
+        musicTracks = FXCollections.observableArrayList();
+
+        // Привязка столбцов таблицы к свойствам класса MusicTrack
+        musicTrackNameColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        musicTrackGenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        musicTrackAuthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        musicTrackArtistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        musicTrackAlbumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
+        musicTrackReleaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+        musicTrackDurationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+
         // Установка элементов в ComboBox жанров
         musicTrackGenre.setItems(FXCollections.observableArrayList(Genre.values()));
 
@@ -79,7 +96,6 @@ public class MusicLibraryFormController implements Initializable {
         musicTrackDuration.setEditable(true);
 
         // Валидация ввода в Spinner
-        // Валидация ввода в Spinner
         musicTrackDuration.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             // Проверяем, пустое ли значение или не состоит ли оно только из цифр
             if (newValue.isEmpty() || !newValue.matches("\\d*")) {
@@ -100,5 +116,44 @@ public class MusicLibraryFormController implements Initializable {
                 }
             }
         });
+
+        musicLibraryTable.setItems(musicTracks);
+    }
+
+    public void addNewTrack() {
+        String title = musicTrackName.getText();
+        Genre genre = musicTrackGenre.getValue();
+        String author = musicTrackAuthor.getText();
+        String artist = musicTrackArtist.getText();
+        String album = musicTrackAlbum.getText();
+        LocalDate releaseDate = musicTrackReleaseDate.getValue();
+        int duration = musicTrackDuration.getValue();
+
+        if (title.isEmpty() || genre == null || author.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+            showAlert("Ошибка", "Неполный ввод", "Заполните все обязательные поля.");
+        }
+        else {
+            MusicTrack newTrack = new MusicTrack(title, genre, author, artist, album, releaseDate, duration);
+            musicTracks.add(newTrack);
+            clearFields();
+        }
+    }
+
+    private void clearFields() {
+        musicTrackName.clear();
+        musicTrackGenre.setValue(null);
+        musicTrackAuthor.clear();
+        musicTrackArtist.clear();
+        musicTrackAlbum.clear();
+        musicTrackReleaseDate.setValue(LocalDate.now());
+        musicTrackDuration.getValueFactory().setValue(1);
+    }
+
+    private  void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

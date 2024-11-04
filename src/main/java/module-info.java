@@ -8,7 +8,9 @@ module com.coursework.radiostationsimulation {
     requires org.kordamp.bootstrapfx.core;
 
     opens com.coursework.radiostationsimulation to javafx.fxml;
+    opens com.coursework.radiostationsimulation.models to javafx.base;
+    opens com.coursework.radiostationsimulation.GUI to javafx.fxml;
+
     exports com.coursework.radiostationsimulation;
     exports com.coursework.radiostationsimulation.GUI;
-    opens com.coursework.radiostationsimulation.GUI to javafx.fxml;
 }
