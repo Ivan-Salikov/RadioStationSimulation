@@ -1,14 +1,14 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.Genre;
+import com.coursework.radiostationsimulation.models.MusicLibrary;
+import com.coursework.radiostationsimulation.models.RadioProgram;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,17 +32,70 @@ public class RadioProgramsFormController implements Initializable {
     private Spinner<Integer> radioProgramDuration;
 
     @FXML
-    private TableView<?> radioProgramsTable;
+    private TableView<RadioProgram> radioProgramsTable;
+    @FXML
+    private TableColumn<RadioProgram, String> radioProgramNameColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> radioProgramTypeColumn;
+    @FXML
+    private TableColumn<RadioProgram, Genre> radioProgramGenreColumn;
+    @FXML
+    private TableColumn<RadioProgram, Integer> radioProgramDurationColumn;
 
     @FXML
     private ComboBox<String> searchCriteriaCombobox;
     @FXML
     private TextField searchField;
 
+    private ObservableList<RadioProgram> radioPrograms;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        radioPrograms = FXCollections.observableArrayList();
+
+        // Установка элементов в ComboBoxes
         radioProgramType.setItems(FXCollections.observableArrayList("По заявкам слушателей", "Хит-парад"));
         radioProgramGenre.setItems(FXCollections.observableArrayList(Genre.values()));
+
+        // Привязка столбцов таблицы к свойствам класса MusicTrack
+        radioProgramNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        radioProgramTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        radioProgramGenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        radioProgramDurationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+
+        // Установка значений для Spinner
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 3);
+        radioProgramDuration.setValueFactory(valueFactory);
+
+        // Разрешение редактирования Spinner
+        radioProgramDuration.setEditable(true);
+
+        // Валидация ввода в Spinner
+        radioProgramDuration.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Проверяем, пустое ли значение или не состоит ли оно только из цифр
+            if (newValue.isEmpty() || !newValue.matches("\\d*")) {
+                radioProgramDuration.getEditor().setText(oldValue); // Восстанавливаем старое значение
+            } else {
+                try {
+                    int value = Integer.parseInt(newValue);
+                    // Проверяем диапазон
+                    if (value < 1) {
+                        value = 1; // Устанавливаем минимальное значение
+                    } else if (value > 3) {
+                        value = 3; // Устанавливаем максимальное значение
+                    }
+                    radioProgramDuration.getValueFactory().setValue(value);
+                    radioProgramDuration.getEditor().setText(String.valueOf(value)); // Обновляем текстовое поле
+                } catch (NumberFormatException e) {
+                    radioProgramDuration.getEditor().setText(oldValue); // Восстанавливаем старое значение
+                }
+            }
+        });
+
+        // Инициализация критериев поиска
         searchCriteriaCombobox.setItems(FXCollections.observableArrayList("Название", "Тип", "Жанр", "Длительность"));
+        searchCriteriaCombobox.getSelectionModel().selectFirst();
+
+        radioProgramsTable.setItems(radioPrograms);
     }
 }
