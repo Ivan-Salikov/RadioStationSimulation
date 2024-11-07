@@ -46,7 +46,7 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-              <Button fx:id="deleteRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER">
+              <Button fx:id="deleteRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteSelectedRadioProgram" prefHeight="26.0" prefWidth="161.0" text="Удалить" textAlignment="CENTER">
                   <font>
                       <Font size="14.0" />
                   </font>
@@ -126,7 +126,7 @@
                </font>
             </TextField>
             <ComboBox fx:id="searchCriteriaCombobox" prefHeight="26.0" prefWidth="146.0" />
-                <Button fx:id="searchRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" text="Поиск" textAlignment="CENTER">
+                <Button fx:id="searchRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#searchRadioProgram" prefHeight="30.0" prefWidth="60.0" text="Поиск" textAlignment="CENTER">
                     <font>
                         <Font size="14.0" />
                     </font>

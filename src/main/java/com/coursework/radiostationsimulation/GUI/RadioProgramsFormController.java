@@ -3,12 +3,14 @@ package com.coursework.radiostationsimulation.GUI;
 import com.coursework.radiostationsimulation.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -56,7 +58,7 @@ public class RadioProgramsFormController implements Initializable {
         radioProgramType.setItems(FXCollections.observableArrayList("По заявкам слушателей", "Хит-парад"));
         radioProgramGenre.setItems(FXCollections.observableArrayList(Genre.values()));
 
-        // Привязка столбцов таблицы к свойствам класса MusicTrack
+        // Привязка столбцов таблицы к свойствам класса RadioProgram
         radioProgramNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         radioProgramTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         radioProgramGenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
@@ -126,6 +128,47 @@ public class RadioProgramsFormController implements Initializable {
             radioPrograms.add(newProgram);
             clearFields();
         }
+    }
+
+    public void deleteSelectedRadioProgram() {
+        RadioProgram selectedRadioProgram = radioProgramsTable.getSelectionModel().getSelectedItem();
+        if (selectedRadioProgram != null) {
+            radioPrograms.remove(selectedRadioProgram);
+        }
+        else {
+            showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
+        }
+    }
+
+    // Установка поиска
+    public void searchRadioProgram() {
+        String searchTerm = searchField.getText().trim();
+        String selectedCriteria = searchCriteriaCombobox.getValue();
+
+        FilteredList<RadioProgram> filteredList = new FilteredList<>(radioPrograms, program -> {
+            if (searchTerm.isEmpty()) {
+                return true;
+            }
+            switch (selectedCriteria) {
+                case "Название":
+                    return program.getName().equalsIgnoreCase(searchTerm);
+                case "Тип":
+                    return program.getType().equalsIgnoreCase(searchTerm);
+                case "Жанр":
+                    return program.getGenre().toString().equalsIgnoreCase(searchTerm);
+                case "Длительность":
+                    try {
+                        int duration = Integer.parseInt(searchTerm);
+                        return program.getDuration() == duration;
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
+        });
+
+        radioProgramsTable.setItems(filteredList);
     }
 
     private void clearFields() {
