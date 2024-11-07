@@ -4,12 +4,14 @@ import com.coursework.radiostationsimulation.models.Genre;
 import com.coursework.radiostationsimulation.models.MusicLibrary;
 import com.coursework.radiostationsimulation.models.MusicTrack;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -53,11 +55,16 @@ public class MusicLibraryFormController implements Initializable {
     @FXML
     private Spinner<Integer> musicTrackDuration;
 
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> searchCriteriaComboBox;
+
     private MusicLibrary musicTracks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Инициализация списка треков
+        // Инициализация списка треков и FilteredList
         musicTracks = new MusicLibrary();
 
         // Привязка столбцов таблицы к свойствам класса MusicTrack
@@ -117,6 +124,12 @@ public class MusicLibraryFormController implements Initializable {
             }
         });
 
+        // Инициализация критериев поиска
+        searchCriteriaComboBox.setItems(FXCollections.observableArrayList(
+                "Название", "Жанр", "Автор", "Исполнитель", "Альбом", "Год выпуска", "Длительность"
+        ));
+        searchCriteriaComboBox.getSelectionModel().selectFirst();
+
         musicLibraryTable.setItems(musicTracks.getMusicTracks());
     }
 
@@ -148,6 +161,50 @@ public class MusicLibraryFormController implements Initializable {
             showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
         }
     }
+
+    // Установка поиска
+    public void searchTrack() {
+        String searchTerm = searchField.getText().trim();
+        String selectedCriteria = searchCriteriaComboBox.getValue();
+
+        FilteredList<MusicTrack> filteredList = new FilteredList<>(musicTracks.getMusicTracks(), track -> {
+            if (searchTerm.isEmpty()) {
+                return true;
+            }
+            switch (selectedCriteria) {
+                case "Название":
+                    return track.getTitle().equalsIgnoreCase(searchTerm);
+                case "Жанр":
+                    return track.getGenre().toString().equalsIgnoreCase(searchTerm);
+                case "Автор":
+                    return track.getAuthor().equalsIgnoreCase(searchTerm);
+                case "Исполнитель":
+                    return track.getArtist().equalsIgnoreCase(searchTerm);
+                case "Альбом":
+                    return track.getAlbum().equalsIgnoreCase(searchTerm);
+                case "Год выпуска":
+                    try {
+                        LocalDate date = LocalDate.parse(searchTerm);
+                        return track.getReleaseDate().equals(date);
+                    } catch (DateTimeException e) {
+                        return false;
+                    }
+                case "Длительность":
+                    try {
+                        int duration = Integer.parseInt(searchTerm);
+                        return track.getDuration() == duration;
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
+        });
+
+        musicLibraryTable.setItems(filteredList);
+    }
+
+
 
     private void clearFields() {
         musicTrackName.clear();
