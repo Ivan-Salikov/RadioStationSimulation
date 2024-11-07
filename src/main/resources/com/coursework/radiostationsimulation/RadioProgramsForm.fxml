@@ -38,7 +38,7 @@
         </Label>
         <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="834.0" spacing="50.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
             <children>
-                <Button fx:id="addNewRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="32.0" prefWidth="149.0" text="Добавить" textAlignment="CENTER">
+                <Button fx:id="addNewRadioProgram" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNewRadioProgram" prefHeight="32.0" prefWidth="149.0" text="Добавить" textAlignment="CENTER">
                     <padding>
                         <Insets bottom="5.0" />
                     </padding>

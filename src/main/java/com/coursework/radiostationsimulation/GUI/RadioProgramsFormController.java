@@ -1,8 +1,6 @@
 package com.coursework.radiostationsimulation.GUI;
 
-import com.coursework.radiostationsimulation.models.Genre;
-import com.coursework.radiostationsimulation.models.MusicLibrary;
-import com.coursework.radiostationsimulation.models.RadioProgram;
+import com.coursework.radiostationsimulation.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class RadioProgramsFormController implements Initializable {
@@ -97,5 +96,50 @@ public class RadioProgramsFormController implements Initializable {
         searchCriteriaCombobox.getSelectionModel().selectFirst();
 
         radioProgramsTable.setItems(radioPrograms);
+    }
+
+    public void addNewRadioProgram() {
+        String name = radioProgramName.getText();
+        String type = radioProgramType.getValue();
+        Genre genre = radioProgramGenre.getValue();
+        int duration = radioProgramDuration.getValue();
+
+        RadioProgram newProgram;
+
+        if (name.isEmpty() || type == null || genre == null) {
+            showAlert("Ошибка Ввода", "Неполный ввод", "Заполните все обязательные поля.");
+        }
+        else {
+            // Используем switch для создания объекта нужного подкласса
+            switch (type) {
+                case "По заявкам слушателей":
+                    newProgram = new AccordingToListenersRequests(name, type, genre, duration);
+                    break;
+                case "Хит-парад":
+                    newProgram = new HitParade(name, type, genre, duration);
+                    break;
+                default:
+                    return;
+            }
+
+            // Добавляем программу в список и обновляем таблицу
+            radioPrograms.add(newProgram);
+            clearFields();
+        }
+    }
+
+    private void clearFields() {
+        radioProgramName.clear();
+        radioProgramType.setValue(null);
+        radioProgramGenre.setValue(null);
+        radioProgramDuration.getValueFactory().setValue(1);
+    }
+
+    private  void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
