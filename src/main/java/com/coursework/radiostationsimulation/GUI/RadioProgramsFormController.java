@@ -48,11 +48,10 @@ public class RadioProgramsFormController implements Initializable {
     @FXML
     private TextField searchField;
 
-    private ObservableList<RadioProgram> radioPrograms;
+    public static ObservableList<RadioProgram> radioPrograms = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        radioPrograms = FXCollections.observableArrayList();
 
         // Установка элементов в ComboBoxes
         radioProgramType.setItems(FXCollections.observableArrayList("По заявкам слушателей", "Хит-парад"));

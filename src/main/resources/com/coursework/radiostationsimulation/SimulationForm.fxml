@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.coursework.radiostationsimulation.GUI.SimulationFormController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="300.79998779296875" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="300.79998779296875" />
@@ -35,21 +35,21 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Редактирование">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Фонотека" />
-                                <MenuItem mnemonicParsing="false" text="Радиопрограммы" />
+                                <MenuItem fx:id="openMusicLibraryMenuItem" mnemonicParsing="false" text="Фонотека" />
+                                <MenuItem fx:id="openRadioProgramsMenuItem" mnemonicParsing="false" text="Радиопрограммы" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Симуляция">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Старт" />
-                                <CheckMenuItem mnemonicParsing="false" text="Пауза" />
-                                <MenuItem mnemonicParsing="false" text="Стоп" />
+                                <MenuItem fx:id="startSumulationMenuItem" mnemonicParsing="false" text="Старт" />
+                                <CheckMenuItem fx:id="pauseSimulationCheckMenuItem" mnemonicParsing="false" text="Пауза" />
+                                <MenuItem fx:id="stopSimulationMenuItem" mnemonicParsing="false" text="Стоп" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Помощь">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="О программе" />
-                                <MenuItem mnemonicParsing="false" text="Руководство" />
+                                <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="О программе" />
+                                <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" text="Руководство" />
                             </items>
                         </Menu>
                     </menus>
@@ -71,7 +71,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="requestsTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></TableView>
@@ -87,7 +87,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="completeRequestsTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></TableView>
@@ -100,7 +100,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="accordingToListenersTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></TableView>
@@ -113,7 +113,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="hitParadeTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></TableView>
@@ -140,7 +140,7 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <Spinner prefHeight="26.0" prefWidth="187.0" />
+                                          <Spinner fx:id="simulationDuration" prefHeight="26.0" prefWidth="187.0" />
                                       </children>
                                   </HBox>
                                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="338.0" spacing="10.0">
@@ -150,15 +150,15 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <Spinner prefHeight="26.0" prefWidth="186.0" />
+                                          <Spinner fx:id="simulationStep" prefHeight="26.0" prefWidth="186.0" />
                                       </children>
                                   </HBox>
-                                  <Label text="Количество радиопрограмм: 0" textAlignment="CENTER">
+                                  <Label fx:id="radioProgramsCountLabel" text="Количество радиопрограмм: 0" textAlignment="CENTER">
                                       <font>
                                           <Font size="14.0" />
                                       </font>
                                   </Label>
-                                  <Label text="Количество композиций: 0">
+                                  <Label fx:id="musicTracksCountLabel" text="Количество композиций: 0">
                                       <font>
                                           <Font size="14.0" />
                                       </font>
@@ -184,25 +184,25 @@
                               <children>
                                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                       <children>
-                                          <TextArea editable="false" prefHeight="94.0" prefWidth="272.0" text="Список прозвучавших произведений:" HBox.hgrow="ALWAYS">
+                                          <TextArea fx:id="playedTracks" editable="false" prefHeight="94.0" prefWidth="272.0" text="Список прозвучавших произведений:" HBox.hgrow="ALWAYS">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </TextArea>
-                                          <TextArea editable="false" prefHeight="100.0" prefWidth="266.0" text="Самые рейтинговые произведения:" HBox.hgrow="ALWAYS">
+                                          <TextArea fx:id="mostRatedTracks" editable="false" prefHeight="100.0" prefWidth="266.0" text="Самые рейтинговые произведения:" HBox.hgrow="ALWAYS">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </TextArea>
-                                          <TextArea editable="false" prefHeight="94.0" prefWidth="96.0" text="Топ 5 жанров:" HBox.hgrow="ALWAYS" />
+                                          <TextArea fx:id="top5Genres" editable="false" prefHeight="94.0" prefWidth="96.0" text="Топ 5 жанров:" HBox.hgrow="ALWAYS" />
                                       </children>
                                   </HBox>
-                                  <Label text="Количество заявок слушателей: 0">
+                                  <Label fx:id="requestsCountLable" text="Количество заявок слушателей: 0">
                                       <font>
                                           <Font size="14.0" />
                                       </font>
                                   </Label>
-                                  <Label text="Количество обработанных заявок: 0">
+                                  <Label fx:id="completeRequestsLable" text="Количество обработанных заявок: 0">
                                       <font>
                                           <Font size="14.0" />
                                       </font>

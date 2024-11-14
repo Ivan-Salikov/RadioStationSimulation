@@ -60,13 +60,10 @@ public class MusicLibraryFormController implements Initializable {
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
 
-    private MusicLibrary musicTracks;
+    public static MusicLibrary musicTracks = new MusicLibrary();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Инициализация списка треков и FilteredList
-        musicTracks = new MusicLibrary();
-
         // Привязка столбцов таблицы к свойствам класса MusicTrack
         musicTrackNameColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         musicTrackGenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
