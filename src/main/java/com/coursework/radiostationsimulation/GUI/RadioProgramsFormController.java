@@ -48,8 +48,6 @@ public class RadioProgramsFormController implements Initializable {
     @FXML
     private TextField searchField;
 
-    public static ObservableList<RadioProgram> radioPrograms = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -96,7 +94,7 @@ public class RadioProgramsFormController implements Initializable {
         searchCriteriaCombobox.setItems(FXCollections.observableArrayList("Название", "Тип", "Жанр", "Длительность"));
         searchCriteriaCombobox.getSelectionModel().selectFirst();
 
-        radioProgramsTable.setItems(radioPrograms);
+        radioProgramsTable.setItems(SimulationFormController.radioPrograms);
     }
 
     public void addNewRadioProgram() {
@@ -124,7 +122,7 @@ public class RadioProgramsFormController implements Initializable {
             }
 
             // Добавляем программу в список и обновляем таблицу
-            radioPrograms.add(newProgram);
+            SimulationFormController.radioPrograms.add(newProgram);
             clearFields();
         }
     }
@@ -132,7 +130,7 @@ public class RadioProgramsFormController implements Initializable {
     public void deleteSelectedRadioProgram() {
         RadioProgram selectedRadioProgram = radioProgramsTable.getSelectionModel().getSelectedItem();
         if (selectedRadioProgram != null) {
-            radioPrograms.remove(selectedRadioProgram);
+            SimulationFormController.radioPrograms.remove(selectedRadioProgram);
         }
         else {
             showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
@@ -144,7 +142,7 @@ public class RadioProgramsFormController implements Initializable {
         String searchTerm = searchField.getText().trim();
         String selectedCriteria = searchCriteriaCombobox.getValue();
 
-        FilteredList<RadioProgram> filteredList = new FilteredList<>(radioPrograms, program -> {
+        FilteredList<RadioProgram> filteredList = new FilteredList<>(SimulationFormController.radioPrograms, program -> {
             if (searchTerm.isEmpty()) {
                 return true;
             }

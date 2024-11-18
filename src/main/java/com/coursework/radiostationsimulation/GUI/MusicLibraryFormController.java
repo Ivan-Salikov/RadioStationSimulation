@@ -60,8 +60,6 @@ public class MusicLibraryFormController implements Initializable {
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
 
-    public static MusicLibrary musicTracks = new MusicLibrary();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Привязка столбцов таблицы к свойствам класса MusicTrack
@@ -127,7 +125,7 @@ public class MusicLibraryFormController implements Initializable {
         ));
         searchCriteriaComboBox.getSelectionModel().selectFirst();
 
-        musicLibraryTable.setItems(musicTracks.getMusicTracks());
+        musicLibraryTable.setItems(SimulationFormController.musicTracks.getMusicTracks());
     }
 
     public void addNewTrack() {
@@ -144,7 +142,7 @@ public class MusicLibraryFormController implements Initializable {
         }
         else {
             MusicTrack newTrack = new MusicTrack(title, genre, author, artist, album, releaseDate, duration);
-            musicTracks.addMusicTrack(newTrack);
+            SimulationFormController.musicTracks.addMusicTrack(newTrack);
             clearFields();
         }
     }
@@ -152,7 +150,7 @@ public class MusicLibraryFormController implements Initializable {
     public void deleteSelectedTrack() {
         MusicTrack selectedTrack = musicLibraryTable.getSelectionModel().getSelectedItem();
         if (selectedTrack != null) {
-            musicTracks.removeMusicTrack(selectedTrack);
+            SimulationFormController.musicTracks.removeMusicTrack(selectedTrack);
         }
         else {
             showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
@@ -164,7 +162,7 @@ public class MusicLibraryFormController implements Initializable {
         String searchTerm = searchField.getText().trim();
         String selectedCriteria = searchCriteriaComboBox.getValue();
 
-        FilteredList<MusicTrack> filteredList = new FilteredList<>(musicTracks.getMusicTracks(), track -> {
+        FilteredList<MusicTrack> filteredList = new FilteredList<>(SimulationFormController.musicTracks.getMusicTracks(), track -> {
             if (searchTerm.isEmpty()) {
                 return true;
             }

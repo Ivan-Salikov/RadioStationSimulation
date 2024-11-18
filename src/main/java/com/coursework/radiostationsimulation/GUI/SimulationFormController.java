@@ -1,5 +1,9 @@
 package com.coursework.radiostationsimulation.GUI;
 
+import com.coursework.radiostationsimulation.models.MusicLibrary;
+import com.coursework.radiostationsimulation.models.RadioProgram;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
@@ -54,4 +58,7 @@ public class SimulationFormController {
     private Label requestsCountLable;
     @FXML
     private Label completeRequestsLable;
+
+    public static MusicLibrary musicTracks = new MusicLibrary();
+    public static ObservableList<RadioProgram> radioPrograms = FXCollections.observableArrayList();
 }
