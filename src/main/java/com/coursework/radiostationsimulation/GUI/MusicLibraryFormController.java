@@ -1,7 +1,6 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.Genre;
-import com.coursework.radiostationsimulation.models.MusicLibrary;
 import com.coursework.radiostationsimulation.models.MusicTrack;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;

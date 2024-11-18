@@ -2,7 +2,6 @@ package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,8 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class RadioProgramsFormController implements Initializable {

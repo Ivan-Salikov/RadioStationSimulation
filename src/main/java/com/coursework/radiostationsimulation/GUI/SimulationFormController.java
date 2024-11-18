@@ -2,15 +2,11 @@ package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.MusicLibrary;
 import com.coursework.radiostationsimulation.models.RadioProgram;
+import com.coursework.radiostationsimulation.models.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 
 public class SimulationFormController {
     @FXML
@@ -31,18 +27,47 @@ public class SimulationFormController {
     private MenuItem instructionMenuItem;
 
     @FXML
-    private TableView<?> requestsTable;
+    private TableView<Request> requestsTable;
     @FXML
-    private TableView<?> completeRequestsTable;
+    private TableColumn<Request, String> requestTypeColumn;
     @FXML
-    private TableView<?> accordingToListenersTable;
-    @FXML
-    private TableView<?> hitParadeTable;
+    private TableColumn<Request, String> requestValueColumn;
 
     @FXML
-    private Spinner<?> simulationDuration;
+    private TableView<Request> completeRequestsTable;
     @FXML
-    private Spinner<?> simulationStep;
+    private TableColumn<Request, String> completeRequestTypeColumn;
+    @FXML
+    private TableColumn<Request, String> completeRequestValueColumn;
+
+
+    @FXML
+    private TableView<RadioProgram> accordingToListenersTable;
+    @FXML
+    private TableColumn<RadioProgram, String> accordingToListenersNameColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> accordingToListenersGenreColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> accordingToListenersDurationColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> accordingToListenersTrackListColumn;
+
+    @FXML
+    private TableView<RadioProgram> hitParadeTable;
+    @FXML
+    private TableColumn<RadioProgram, String> hitParadeNameColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> hitParadeGenreColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> hitParadeDurationColumn;
+    @FXML
+    private TableColumn<RadioProgram, String> hitParadeTrackListColumn;
+
+
+    @FXML
+    private Spinner<Integer> simulationDuration;
+    @FXML
+    private Spinner<Integer> simulationStep;
     @FXML
     private Label radioProgramsCountLabel;
     @FXML
