@@ -6,9 +6,18 @@ import com.coursework.radiostationsimulation.models.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-public class SimulationFormController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class SimulationFormController implements Initializable {
     @FXML
     private MenuItem openMusicLibraryMenuItem;
     @FXML
@@ -86,4 +95,56 @@ public class SimulationFormController {
 
     public static MusicLibrary musicTracks = new MusicLibrary();
     public static ObservableList<RadioProgram> radioPrograms = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateTracksAndProgramsCount();
+    }
+
+    private void updateTracksAndProgramsCount() {
+        musicTracksCountLabel.setText("Треки: " + musicTracks.getMusicTracks().size());
+        radioProgramsCountLabel.setText("Радиопрограммы: " + radioPrograms.size());
+    }
+
+    // Открывает окно для работы с фонотекой.
+    public void openMusicLibraryWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/coursework/radiostationsimulation/MusicLibraryForm.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Фонотека");
+            stage.initModality(Modality.WINDOW_MODAL); // Модальное окно
+            stage.initOwner(musicTracksCountLabel.getScene().getWindow()); // Привязываем к текущему окну
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Обновление меток после закрытия окна
+            updateTracksAndProgramsCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Открывает окно для работы с радиопрограммами.
+    public void openRadioProgramsWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/coursework/radiostationsimulation/RadioProgramsForm.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Радиопрограммы");
+            stage.initModality(Modality.WINDOW_MODAL); // Модальное окно
+            stage.initOwner(radioProgramsCountLabel.getScene().getWindow()); // Привязываем к текущему окну
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Обновление меток после закрытия окна
+            updateTracksAndProgramsCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

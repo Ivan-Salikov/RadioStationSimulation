@@ -36,8 +36,8 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Редактирование">
                             <items>
-                                <MenuItem fx:id="openMusicLibraryMenuItem" mnemonicParsing="false" text="Фонотека" />
-                                <MenuItem fx:id="openRadioProgramsMenuItem" mnemonicParsing="false" text="Радиопрограммы" />
+                                <MenuItem fx:id="openMusicLibraryMenuItem" mnemonicParsing="false" onAction="#openMusicLibraryWindow" text="Фонотека" />
+                                <MenuItem fx:id="openRadioProgramsMenuItem" mnemonicParsing="false" onAction="#openRadioProgramsWindow" text="Радиопрограммы" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Симуляция">
