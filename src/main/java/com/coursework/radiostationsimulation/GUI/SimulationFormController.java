@@ -3,12 +3,18 @@ package com.coursework.radiostationsimulation.GUI;
 import com.coursework.radiostationsimulation.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
@@ -97,6 +103,9 @@ public class SimulationFormController implements Initializable {
     private RequestQueue requestQueue = new RequestQueue();
     private RadioStation radioStation;
 
+    private Timeline simulationTimer;
+    private boolean isSimulationRunning = false;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Инициализация радиостанции
@@ -176,8 +185,16 @@ public class SimulationFormController implements Initializable {
             radioStation.configureSimulation(duration, step);
             radioStation.startSimulation();
 
+            // Запуск таймера для выполнения simulateStep каждую секунду
+            simulationTimer = new Timeline(
+                    new KeyFrame(Duration.seconds(1), e -> simulateStep())
+            );
+            simulationTimer.setCycleCount(Timeline.INDEFINITE); // Будет работать бесконечно
+            simulationTimer.play(); // Запускаем таймер
+
             // Обновление статуса
             updateTracksAndProgramsCount();
+            isSimulationRunning = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,8 +205,13 @@ public class SimulationFormController implements Initializable {
         try {
             radioStation.stopSimulation();
 
+            if (simulationTimer != null) {
+                simulationTimer.stop(); // Останавливаем таймер
+            }
+
             // Обновление статуса
             updateTracksAndProgramsCount();
+            isSimulationRunning = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,6 +226,9 @@ public class SimulationFormController implements Initializable {
                 // Обновление таблицы запросов
                 updateTracksAndProgramsCount();
                 requestsTable.refresh();
+            }
+            else {
+                stopSimulation();
             }
         } catch (Exception e) {
             e.printStackTrace();

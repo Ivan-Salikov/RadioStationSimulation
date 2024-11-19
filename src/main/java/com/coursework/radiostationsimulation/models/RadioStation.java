@@ -64,10 +64,10 @@ public class RadioStation {
     }
 
     private void generateRequests(){
-        int maxRequests = musicLibrary.size() * 2;
+        int maxRequests = musicLibrary.size();
         Random random = new Random();
 
-        int newRequestsCount = random.nextInt(Math.max(1, maxRequests / 10)) + 1;
+        int newRequestsCount = random.nextInt(Math.max(1, maxRequests)) + 1;
         for (int i = 0; i < newRequestsCount; i++) {
             String randomType = generateRandomRequestType();
             String randomValue = generateRandomRequestValue(randomType);

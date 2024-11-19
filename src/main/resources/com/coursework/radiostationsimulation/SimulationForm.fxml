@@ -44,7 +44,6 @@
                             <items>
                                 <MenuItem fx:id="startSumulationMenuItem" mnemonicParsing="false" onAction="#startSimulation" text="Старт" />
                                 <CheckMenuItem fx:id="pauseSimulationCheckMenuItem" mnemonicParsing="false" text="Пауза" />
-                        <MenuItem mnemonicParsing="false" onAction="#simulateStep" text="Шаг" />
                                 <MenuItem fx:id="stopSimulationMenuItem" mnemonicParsing="false" onAction="#stopSimulation" text="Стоп" />
                             </items>
                         </Menu>
