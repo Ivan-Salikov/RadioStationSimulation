@@ -25,4 +25,13 @@ public class MusicLibrary {
     public ObservableList<MusicTrack> getMusicTracks(){
         return musicTracks;
     }
+
+    public MusicTrack getRandomTrack() {
+        if (musicTracks.isEmpty()) return null;
+        return musicTracks.get((int) (Math.random() * musicTracks.size()));
+    }
+
+    public int size() {
+        return musicTracks.size();
+    }
 }

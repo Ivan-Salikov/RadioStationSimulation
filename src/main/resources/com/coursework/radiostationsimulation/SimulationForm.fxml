@@ -42,9 +42,10 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Симуляция">
                             <items>
-                                <MenuItem fx:id="startSumulationMenuItem" mnemonicParsing="false" text="Старт" />
+                                <MenuItem fx:id="startSumulationMenuItem" mnemonicParsing="false" onAction="#startSimulation" text="Старт" />
                                 <CheckMenuItem fx:id="pauseSimulationCheckMenuItem" mnemonicParsing="false" text="Пауза" />
-                                <MenuItem fx:id="stopSimulationMenuItem" mnemonicParsing="false" text="Стоп" />
+                        <MenuItem mnemonicParsing="false" onAction="#simulateStep" text="Шаг" />
+                                <MenuItem fx:id="stopSimulationMenuItem" mnemonicParsing="false" onAction="#stopSimulation" text="Стоп" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Помощь">
@@ -230,12 +231,12 @@
                                           <TextArea fx:id="top5Genres" editable="false" prefHeight="94.0" prefWidth="96.0" text="Топ 5 жанров:" HBox.hgrow="ALWAYS" />
                                       </children>
                                   </HBox>
-                                  <Label fx:id="requestsCountLable" text="Количество заявок слушателей: 0">
+                                  <Label fx:id="requestsCountLabel" text="Количество заявок слушателей: 0">
                                       <font>
                                           <Font size="14.0" />
                                       </font>
                                   </Label>
-                                  <Label fx:id="completeRequestsLable" text="Количество обработанных заявок: 0">
+                                  <Label fx:id="completeRequestsLabel" text="Количество обработанных заявок: 0">
                                       <font>
                                           <Font size="14.0" />
                                       </font>
