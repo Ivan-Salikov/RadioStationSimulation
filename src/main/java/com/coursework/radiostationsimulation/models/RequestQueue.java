@@ -25,6 +25,10 @@ public class RequestQueue {
         return requests;
     }
 
+    public void clear() {
+        requests.clear(); // Очистка списка запросов
+    }
+
     public int size() {
         return requests.size();
     }

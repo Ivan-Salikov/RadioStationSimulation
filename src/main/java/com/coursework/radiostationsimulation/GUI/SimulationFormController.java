@@ -179,6 +179,14 @@ public class SimulationFormController implements Initializable {
     // Запуск симуляции
     public void startSimulation() {
         try {
+            // Сброс таблицы запросов и очереди
+            requestQueue.clear();
+            requestsTable.getItems().clear();
+
+            // Сброс количества запросов
+            requestsCountLabel.setText("Запросы: 0");
+
+            // Установка параметров симуляции
             int duration = simulationDuration.getValue();
             int step = simulationStep.getValue();
 
