@@ -117,6 +117,12 @@ public class SimulationFormController implements Initializable {
 
         updateTracksAndProgramsCount();
         bindRequestTable();
+
+        stopSimulationMenuItem.setDisable(true);
+        pauseSimulationCheckMenuItem.setDisable(true);
+
+        // Привязываем действие к CheckMenuItem
+        pauseSimulationCheckMenuItem.setOnAction(event -> togglePauseSimulation());
     }
 
     private void updateTracksAndProgramsCount() {
@@ -179,6 +185,8 @@ public class SimulationFormController implements Initializable {
     // Запуск симуляции
     public void startSimulation() {
         try {
+            startSumulationMenuItem.setDisable(true);
+
             // Сброс таблицы запросов и очереди
             requestQueue.clear();
             requestsTable.getItems().clear();
@@ -203,14 +211,36 @@ public class SimulationFormController implements Initializable {
             // Обновление статуса
             updateTracksAndProgramsCount();
             isSimulationRunning = true;
+
+            stopSimulationMenuItem.setDisable(false);
+            pauseSimulationCheckMenuItem.setDisable(false);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // Метод для установки паузы/возобновления симуляции
+    public void togglePauseSimulation() {
+        if (pauseSimulationCheckMenuItem.isSelected()) {
+            // Если пункт меню выбран, ставим симуляцию на паузу
+            if (simulationTimer != null && isSimulationRunning) {
+                simulationTimer.pause();
+            }
+        } else {
+            // Если пункт меню снят, возобновляем симуляцию
+            if (simulationTimer != null && isSimulationRunning) {
+                simulationTimer.play();
+            }
         }
     }
 
     // Остановка симуляции
     public void stopSimulation() {
         try {
+            stopSimulationMenuItem.setDisable(true);
+            pauseSimulationCheckMenuItem.setSelected(false);
+            pauseSimulationCheckMenuItem.setDisable(true);
+
             radioStation.stopSimulation();
 
             if (simulationTimer != null) {
@@ -220,12 +250,14 @@ public class SimulationFormController implements Initializable {
             // Обновление статуса
             updateTracksAndProgramsCount();
             isSimulationRunning = false;
+
+            startSumulationMenuItem.setDisable(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Шаг симуляции (вызывается вручную или через таймер)
+    // Шаг симуляции (вызывается через таймер)
     public void simulateStep() {
         try {
             if (radioStation.canContinueSimulation()) {
