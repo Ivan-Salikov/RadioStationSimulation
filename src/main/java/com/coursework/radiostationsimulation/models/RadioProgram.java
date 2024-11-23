@@ -68,6 +68,16 @@ public class RadioProgram {
         return tracks.stream().mapToInt(MusicTrack::getDuration).sum();
     }
 
+    public ObservableList<MusicTrack> getTracks() {
+        return tracks;
+    }
+
+    public String getTrackListString() {
+        return tracks.stream()
+                .map(MusicTrack::getTitle)
+                .collect(Collectors.joining(", "));
+    }
+
     public void addTrack(MusicTrack track) {
         if (getTotalDuration() + track.getDuration() <= duration*60) {
             tracks.add(track);
@@ -78,13 +88,8 @@ public class RadioProgram {
         return getTotalDuration() >= duration*60;
     }
 
-    public ObservableList<MusicTrack> getTracks() {
-        return tracks;
+    public void clearPlaylist(){
+        tracks.clear();
     }
 
-    public String getTrackListString() {
-        return tracks.stream()
-                .map(MusicTrack::getTitle)
-                .collect(Collectors.joining(", "));
-    }
 }

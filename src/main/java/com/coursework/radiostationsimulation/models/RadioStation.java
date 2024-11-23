@@ -47,7 +47,15 @@ public class RadioStation {
 
     }
 
+    private void resetProgramsPlaylists(){
+        for (RadioProgram program: radioPrograms) {
+            program.clearPlaylist();
+        }
+    }
+
+
     public void startSimulation() {
+        resetProgramsPlaylists();
         isRunning = true;
         currentDay = 1;
         currentStep = 0;
