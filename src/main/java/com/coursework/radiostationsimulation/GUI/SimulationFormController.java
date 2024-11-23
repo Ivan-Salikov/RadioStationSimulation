@@ -115,7 +115,7 @@ public class SimulationFormController implements Initializable {
         simulationDuration.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7, 1)); // 1-7 дней
         simulationStep.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 30, 30)); // 10-1800 сек (по умолчанию 30)
 
-        updateTracksAndProgramsCount();
+        updateStatistics();
         bindRequestTable();
 
         stopSimulationMenuItem.setDisable(true);
@@ -125,11 +125,13 @@ public class SimulationFormController implements Initializable {
         pauseSimulationCheckMenuItem.setOnAction(event -> togglePauseSimulation());
     }
 
-    private void updateTracksAndProgramsCount() {
+    private void updateStatistics() {
         musicTracksCountLabel.setText("Треки: " + musicTracks.getMusicTracks().size());
         radioProgramsCountLabel.setText("Радиопрограммы: " + radioPrograms.size());
         requestsCountLabel.setText("Запросы: " + requestQueue.size());
         completeRequestsLabel.setText("Выполненные запросы: " + completeRequestsTable.getItems().size());
+
+        top5Genres.setText(radioStation.getGenrePopularity());
     }
 
     private void bindRequestTable() {
@@ -160,7 +162,7 @@ public class SimulationFormController implements Initializable {
             stage.showAndWait();
 
             // Обновление меток после закрытия окна
-            updateTracksAndProgramsCount();
+            updateStatistics();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,7 +183,7 @@ public class SimulationFormController implements Initializable {
             stage.showAndWait();
 
             // Обновление меток после закрытия окна
-            updateTracksAndProgramsCount();
+            updateStatistics();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -216,7 +218,7 @@ public class SimulationFormController implements Initializable {
             simulationTimer.play(); // Запускаем таймер
 
             // Обновление статуса
-            updateTracksAndProgramsCount();
+            updateStatistics();
             isSimulationRunning = true;
 
             stopSimulationMenuItem.setDisable(false);
@@ -255,7 +257,7 @@ public class SimulationFormController implements Initializable {
             }
 
             // Обновление статуса
-            updateTracksAndProgramsCount();
+            updateStatistics();
             isSimulationRunning = false;
 
             startSumulationMenuItem.setDisable(false);
@@ -271,7 +273,7 @@ public class SimulationFormController implements Initializable {
                 radioStation.simulateStep();
 
                 // Обновление таблицы запросов
-                updateTracksAndProgramsCount();
+                updateStatistics();
                 requestsTable.refresh();
             }
             else {

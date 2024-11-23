@@ -50,6 +50,7 @@ public class RadioStation {
     private void resetProgramsPlaylists(){
         for (RadioProgram program: radioPrograms) {
             program.clearPlaylist();
+            program.setLastPlayedArtist("");
         }
     }
 
@@ -126,11 +127,12 @@ public class RadioStation {
     }
 
     private void processRequests() {
-        List<Request> allRequests = new ArrayList<>(requestQueue.getRequests());
-        boolean isRequestProcessed = false;
+        List<Request> requestsToMove = new ArrayList<>();
+        Iterator<Request> iterator = requestQueue.getRequests().iterator();
 
-        for (Request request : allRequests) {
-            // Находим трек для заявки
+        while (iterator.hasNext()) {
+            Request request = iterator.next();
+            boolean isRequestProcessed = false;
             MusicTrack bestTrack = findTrackForRequest(request);
 
             if (bestTrack != null) {
@@ -141,9 +143,8 @@ public class RadioStation {
                         // Добавляем трек в программу
                         boolean addedToProgram = addTrackToRadioProgram(bestTrack);
                         if (addedToProgram) {
-                            // Добавляем заявку в выполненные
                             completedRequests.add(request);
-                            requestQueue.removeRequest(request);
+                            iterator.remove(); // Удаляем заявку, если она была обработана
                             incrementGenrePopularity(bestTrack.getGenre());
                             System.out.println("Обработана заявка на трек: " + bestTrack.getTitle());
                             isRequestProcessed = true;
@@ -153,20 +154,21 @@ public class RadioStation {
                 }
             }
 
-            // Если заявку не удалось обработать, переносим её в конец очереди
             if (!isRequestProcessed) {
-                requestQueue.removeRequest(request);
-                requestQueue.addRequest(request);
-            } else {
-                isRequestProcessed = false; // Сбрасываем для следующей заявки
+                requestsToMove.add(request);  // Добавляем заявку в новый список
+                iterator.remove();  // Удаляем заявку из текущего положения
             }
         }
 
+        // Теперь обновляем основную очередь запросов
+        requestQueue.getRequests().addAll(requestsToMove);
+
         // Проверка: если остались необработанные заявки
-        if (requestQueue.getRequests().size() == allRequests.size()) {
+        if (requestQueue.getRequests().size() == completedRequests.size()) {
             System.out.println("Нет подходящего трека для обработки заявок.");
         }
     }
+
 
 
     private MusicTrack findBestTrack(List<Request> requests) {
@@ -228,7 +230,9 @@ public class RadioStation {
     }
 
     private void incrementGenrePopularity(Genre genre) {
+        System.out.println("Популярность жанра до изменения: " + genre + " = " + genrePopularity.get(genre));
         genrePopularity.put(genre, genrePopularity.getOrDefault(genre, 0) + 1);
+        System.out.println("Популярность жанра после изменения: " + genre + " = " + genrePopularity.get(genre));
     }
 
     public RequestQueue getRequestQueue() {
@@ -240,10 +244,18 @@ public class RadioStation {
     }
 
     public String getGenrePopularity() {
-        String genresPopularityStatistics = "Топ 5 жанров:\n";
-        for (Map.Entry<Genre, Integer> entry : genrePopularity.entrySet()) {
-            genresPopularityStatistics += "Жанр: " + entry.getKey() + " | Популярность: " + entry.getValue() + '\n';
-        }
+        StringBuilder genresPopularityStatistics = new StringBuilder("Топ 5 жанров:\n");
+
+        // Сортировка жанров по популярности (по значению в Map)
+        genrePopularity.entrySet().stream()
+                .sorted(Map.Entry.<Genre, Integer>comparingByValue().reversed()) // Сортировка по убыванию
+                .limit(5) // Берем только топ-5 жанров
+                .forEach(entry -> genresPopularityStatistics.append("Жанр: ")
+                        .append(entry.getKey())
+                        .append(" | Популярность: ")
+                        .append(entry.getValue())
+                        .append("\n"));
+
         return genresPopularityStatistics.substring(0, genresPopularityStatistics.length() - 1);
     }
 }
