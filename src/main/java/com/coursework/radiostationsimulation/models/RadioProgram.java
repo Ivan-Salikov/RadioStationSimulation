@@ -12,6 +12,8 @@ public class RadioProgram {
     private  int duration; // длительность программы
     private ObservableList<MusicTrack> tracks; // список треков
 
+    private String lastPlayedArtist = ""; // Последний исполнитель для программы
+
     // Конструктор
     public RadioProgram(String name, String type, Genre genre, int duration) {
         this.name = name;
@@ -52,6 +54,14 @@ public class RadioProgram {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getLastPlayedArtist() {
+        return lastPlayedArtist;
+    }
+
+    public void setLastPlayedArtist(String lastPlayedArtist) {
+        this.lastPlayedArtist = lastPlayedArtist;
     }
 
     public int getTotalDuration() {

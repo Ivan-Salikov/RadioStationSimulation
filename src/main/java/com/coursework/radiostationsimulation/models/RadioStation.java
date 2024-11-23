@@ -25,8 +25,6 @@ public class RadioStation {
     // Статистика по жанрам
     private final Map<Genre, Integer> genrePopularity;
 
-    private String lastPlayedArtist = ""; // Последний исполнитель
-
     public RadioStation(MusicLibrary musicLibrary, ObservableList<RadioProgram> radioPrograms, RequestQueue requestQueue) {
         this.musicLibrary = musicLibrary;
         this.radioPrograms = radioPrograms;
@@ -46,6 +44,7 @@ public class RadioStation {
         this.simulationStepSeconds = simulationStepSeconds;
         this.currentDay = 0;
         this.currentStep = 0;
+
     }
 
     public void startSimulation() {
@@ -119,38 +118,48 @@ public class RadioStation {
     }
 
     private void processRequests() {
-        List<Request> allRequests = requestQueue.getRequests(); // Получить все текущие заявки
-        MusicTrack bestTrack = findBestTrack(allRequests); // Найти лучший трек для обработки
+        List<Request> allRequests = new ArrayList<>(requestQueue.getRequests());
+        boolean isRequestProcessed = false;
 
-        if (bestTrack != null && isDiverse(bestTrack)) {
-            // Добавить трек в подходящую радиопрограмму
-            boolean addedToProgram = addTrackToRadioProgram(bestTrack);
+        for (Request request : allRequests) {
+            // Находим трек для заявки
+            MusicTrack bestTrack = findTrackForRequest(request);
 
-            if (addedToProgram) {
-                // Выполняем заявки, связанные с найденным треком
-                List<Request> satisfiedRequests = allRequests.stream()
-                        .filter(request -> {
-                            // Находим трек, который соответствует заявке
-                            MusicTrack trackForRequest = findTrackForRequest(request);
-                            return trackForRequest != null && trackForRequest.equals(bestTrack); // Сравниваем трек для заявки с выбранным
-                        })
-                        .toList();
-
-                for (Request request : satisfiedRequests) {
-                    completedRequests.add(request);
-                    requestQueue.removeRequest(request);
+            if (bestTrack != null) {
+                for (RadioProgram program : radioPrograms) {
+                    if (Objects.equals(program.getType(), "По заявкам слушателей")
+                            && program.getGenre() == bestTrack.getGenre()
+                            && isDiverse(bestTrack, program)) {
+                        // Добавляем трек в программу
+                        boolean addedToProgram = addTrackToRadioProgram(bestTrack);
+                        if (addedToProgram) {
+                            // Добавляем заявку в выполненные
+                            completedRequests.add(request);
+                            requestQueue.removeRequest(request);
+                            incrementGenrePopularity(bestTrack.getGenre());
+                            System.out.println("Обработана заявка на трек: " + bestTrack.getTitle());
+                            isRequestProcessed = true;
+                            break; // Переходим к следующей заявке
+                        }
+                    }
                 }
-
-                incrementGenrePopularity(bestTrack.getGenre());
-                lastPlayedArtist = bestTrack.getArtist();
-                System.out.println("Обработаны заявки на трек: " + bestTrack.getTitle());
-            } else {
-                System.out.println("Не удалось добавить трек в программу: " + bestTrack.getTitle());
             }
-        } else {
+
+            // Если заявку не удалось обработать, переносим её в конец очереди
+            if (!isRequestProcessed) {
+                requestQueue.removeRequest(request);
+                requestQueue.addRequest(request);
+            } else {
+                isRequestProcessed = false; // Сбрасываем для следующей заявки
+            }
+        }
+
+        // Проверка: если остались необработанные заявки
+        if (requestQueue.getRequests().size() == allRequests.size()) {
             System.out.println("Нет подходящего трека для обработки заявок.");
         }
     }
+
 
     private MusicTrack findBestTrack(List<Request> requests) {
         Map<MusicTrack, Integer> trackRequestCount = new HashMap<>();
@@ -163,21 +172,24 @@ public class RadioStation {
         }
 
         return trackRequestCount.entrySet().stream()
-                .filter(entry -> isDiverse(entry.getKey())) // Учитываем разнообразие
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
 
-    private boolean isDiverse(MusicTrack track) {
-        return !track.getArtist().equals(lastPlayedArtist);
+    private boolean isDiverse(MusicTrack track, RadioProgram program) {
+        return !track.getArtist().equals(program.getLastPlayedArtist());
     }
 
     private boolean addTrackToRadioProgram(MusicTrack track) {
         for (RadioProgram program : radioPrograms) {
-            if (Objects.equals(program.getType(), "По заявкам слушателей") && program.getGenre() == track.getGenre() && !program.isComplete()) {
+            System.out.println(program.getName() + " " + program.getTotalDuration() + " " + program.getLastPlayedArtist());
+            if (Objects.equals(program.getType(), "По заявкам слушателей")
+                    && program.getGenre() == track.getGenre()
+                    && !program.isComplete()
+                    && isDiverse(track, program)) {
                 program.addTrack(track);
-                System.out.println("Трек добавлен в программму " + program.getName());
+                program.setLastPlayedArtist(track.getArtist());
                 return true;
             }
         }
