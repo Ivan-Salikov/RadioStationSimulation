@@ -2,6 +2,6 @@ package com.coursework.radiostationsimulation.models;
 
 public class AuthorRequest extends Request {
     public AuthorRequest(String type, String value) {
-        super(type, value);
+        super("Author", value);
     }
 }

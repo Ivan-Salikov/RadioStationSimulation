@@ -129,15 +129,20 @@ public class SimulationFormController implements Initializable {
         musicTracksCountLabel.setText("Треки: " + musicTracks.getMusicTracks().size());
         radioProgramsCountLabel.setText("Радиопрограммы: " + radioPrograms.size());
         requestsCountLabel.setText("Запросы: " + requestQueue.size());
+        completeRequestsLabel.setText("Выполненные запросы: " + completeRequestsTable.getItems().size());
     }
 
     private void bindRequestTable() {
         // Привязка данных к таблице запросов
         requestsTable.setItems(requestQueue.getRequests());
+        completeRequestsTable.setItems(radioStation.getCompletedRequests());
 
         // Установка фабрик для колонок с использованием геттеров
         requestTypeColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getType()));
         requestValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getValue()));
+
+        completeRequestTypeColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getType()));
+        completeRequestValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getValue()));
     }
 
     // Открывает окно для работы с фонотекой.
