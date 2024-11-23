@@ -10,6 +10,7 @@ public class MusicTrack {
     private String album; // альбом, из которого трек
     private LocalDate releaseDate; // дата выхода трека
     private int duration; // длительность трека в минутах
+    private int popularity; // рейтинг популярности трека
 
     // Конструктор
     public MusicTrack(String title, Genre genre, String author, String artist, String album, LocalDate releaseDate, int duration) {
@@ -20,6 +21,7 @@ public class MusicTrack {
         this.album = album;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.popularity = 0;
     }
 
     // Геттеры и сеттеры
@@ -78,4 +80,14 @@ public class MusicTrack {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void incrementPopularity() {
+        this.popularity++;
+    }
+
+
 }

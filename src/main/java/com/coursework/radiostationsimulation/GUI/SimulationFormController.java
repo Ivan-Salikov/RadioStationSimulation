@@ -196,6 +196,8 @@ public class SimulationFormController implements Initializable {
             requestQueue.clear();
             requestsTable.getItems().clear();
 
+            completeRequestsTable.getItems().clear();
+
             // Сброс количества запросов
             requestsCountLabel.setText("Запросы: 0");
 

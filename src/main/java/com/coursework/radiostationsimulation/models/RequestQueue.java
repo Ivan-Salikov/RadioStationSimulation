@@ -21,6 +21,12 @@ public class RequestQueue {
         return null;
     }
 
+    // Метод для удаления конкретного запроса (по объекту)
+    public boolean removeRequest(Request request) {
+        return requests.remove(request); // Удаляет запрос из очереди
+    }
+
+
     public ObservableList<Request> getRequests() {
         return requests;
     }

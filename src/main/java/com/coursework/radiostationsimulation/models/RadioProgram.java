@@ -3,6 +3,8 @@ package com.coursework.radiostationsimulation.models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.stream.Collectors;
+
 public class RadioProgram {
     private  String name; // название программы
     private  String type; // тип программы
@@ -50,5 +52,29 @@ public class RadioProgram {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getTotalDuration() {
+        return tracks.stream().mapToInt(MusicTrack::getDuration).sum();
+    }
+
+    public void addTrack(MusicTrack track) {
+        if (getTotalDuration() + track.getDuration() <= duration*60) {
+            tracks.add(track);
+        }
+    }
+
+    public boolean isComplete() {
+        return getTotalDuration() >= duration*60;
+    }
+
+    public ObservableList<MusicTrack> getTracks() {
+        return tracks;
+    }
+
+    public String getTrackListString() {
+        return tracks.stream()
+                .map(MusicTrack::getTitle)
+                .collect(Collectors.joining(", "));
     }
 }
