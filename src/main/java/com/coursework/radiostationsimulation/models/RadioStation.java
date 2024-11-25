@@ -58,6 +58,7 @@ public class RadioStation {
     public void startSimulation() {
         resetProgramsPlaylists();
         genrePopularity.replaceAll((genre, count) -> 0);
+        completedRequests.clear();
         isRunning = true;
         currentDay = 1;
         currentStep = 0;
@@ -252,10 +253,7 @@ public class RadioStation {
         genrePopularity.entrySet().stream()
                 .sorted(Map.Entry.<Genre, Integer>comparingByValue().reversed()) // Сортировка по убыванию
                 .limit(5) // Берем только топ-5 жанров
-                .forEach(entry -> genresPopularityStatistics.append("Жанр: ")
-                        .append(entry.getKey())
-                        .append(" | Популярность: ")
-                        .append(entry.getValue())
+                .forEach(entry -> genresPopularityStatistics.append(entry.getKey())
                         .append("\n"));
 
         return genresPopularityStatistics.substring(0, genresPopularityStatistics.length() - 1);

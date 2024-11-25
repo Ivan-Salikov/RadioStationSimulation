@@ -1,6 +1,9 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.*;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,6 +23,7 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class SimulationFormController implements Initializable {
     @FXML
@@ -61,7 +65,7 @@ public class SimulationFormController implements Initializable {
     @FXML
     private TableColumn<RadioProgram, String> accordingToListenersGenreColumn;
     @FXML
-    private TableColumn<RadioProgram, String> accordingToListenersDurationColumn;
+    private TableColumn<RadioProgram, Integer> accordingToListenersDurationColumn;
     @FXML
     private TableColumn<RadioProgram, String> accordingToListenersTrackListColumn;
 
@@ -135,16 +139,28 @@ public class SimulationFormController implements Initializable {
     }
 
     private void bindRequestTable() {
-        // Привязка данных к таблице запросов
-        requestsTable.setItems(requestQueue.getRequests());
-        completeRequestsTable.setItems(radioStation.getCompletedRequests());
-
         // Установка фабрик для колонок с использованием геттеров
         requestTypeColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getType()));
         requestValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getValue()));
 
         completeRequestTypeColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getType()));
         completeRequestValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getValue()));
+
+        accordingToListenersNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
+        accordingToListenersGenreColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGenre().toString()));
+        accordingToListenersDurationColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getDuration()));
+
+        accordingToListenersTrackListColumn.setCellValueFactory(data -> {
+            String playlist = data.getValue().getTracks().stream()
+                    .map(MusicTrack::toString)
+                    .collect(Collectors.joining("\n"));
+            return new SimpleStringProperty(playlist);
+        });
+
+        // Привязка данных к таблице запросов
+        requestsTable.setItems(requestQueue.getRequests());
+        completeRequestsTable.setItems(radioStation.getCompletedRequests());
+        accordingToListenersTable.setItems(radioPrograms);
     }
 
     // Открывает окно для работы с фонотекой.
@@ -196,9 +212,6 @@ public class SimulationFormController implements Initializable {
 
             // Сброс таблицы запросов и очереди
             requestQueue.clear();
-            requestsTable.getItems().clear();
-
-            completeRequestsTable.getItems().clear();
 
             // Сброс количества запросов
             requestsCountLabel.setText("Запросы: 0");
@@ -275,6 +288,7 @@ public class SimulationFormController implements Initializable {
                 // Обновление таблицы запросов
                 updateStatistics();
                 requestsTable.refresh();
+                accordingToListenersTable.refresh();
             }
             else {
                 stopSimulation();
