@@ -89,5 +89,11 @@ public class MusicTrack {
         this.popularity++;
     }
 
-
+    @Override
+    public String toString() {
+        return  title + " (" +
+                album + ", "+
+                releaseDate + ')' +
+                " — " + artist;
+    }
 }

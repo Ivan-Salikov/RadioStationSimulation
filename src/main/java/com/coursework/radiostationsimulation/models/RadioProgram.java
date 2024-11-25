@@ -74,7 +74,7 @@ public class RadioProgram {
 
     public String getTrackListString() {
         return tracks.stream()
-                .map(MusicTrack::getTitle)
+                .map(MusicTrack::toString)
                 .collect(Collectors.joining(", "));
     }
 

@@ -57,6 +57,7 @@ public class RadioStation {
 
     public void startSimulation() {
         resetProgramsPlaylists();
+        genrePopularity.replaceAll((genre, count) -> 0);
         isRunning = true;
         currentDay = 1;
         currentStep = 0;
@@ -81,6 +82,10 @@ public class RadioStation {
         generateRequests();
 
         processRequests();
+
+        for (RadioProgram program : radioPrograms) {
+            System.out.println(program.getTrackListString());
+        }
 
         currentStep++;
         if (currentStep >= simulationStepSeconds) {
@@ -193,7 +198,6 @@ public class RadioStation {
 
     private boolean addTrackToRadioProgram(MusicTrack track) {
         for (RadioProgram program : radioPrograms) {
-            System.out.println(program.getName() + " " + program.getTotalDuration() + " " + program.getLastPlayedArtist());
             if (Objects.equals(program.getType(), "По заявкам слушателей")
                     && program.getGenre() == track.getGenre()
                     && !program.isComplete()
@@ -230,9 +234,7 @@ public class RadioStation {
     }
 
     private void incrementGenrePopularity(Genre genre) {
-        System.out.println("Популярность жанра до изменения: " + genre + " = " + genrePopularity.get(genre));
         genrePopularity.put(genre, genrePopularity.getOrDefault(genre, 0) + 1);
-        System.out.println("Популярность жанра после изменения: " + genre + " = " + genrePopularity.get(genre));
     }
 
     public RequestQueue getRequestQueue() {
