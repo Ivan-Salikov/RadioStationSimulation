@@ -54,9 +54,18 @@ public class RadioStation {
         }
     }
 
+    private void resetAccordingToListenersRequestsProgramsPlaylists(){
+        for (RadioProgram program: radioPrograms) {
+            if (program instanceof AccordingToListenersRequests) {
+                program.clearPlaylist();
+            }
+        }
+    }
+
 
     public void startSimulation() {
         resetProgramsPlaylists();
+        musicLibrary.resetTracksPopularity();
         genrePopularity.replaceAll((genre, count) -> 0);
         completedRequests.clear();
         isRunning = true;
@@ -92,6 +101,9 @@ public class RadioStation {
         if (currentStep >= simulationStepSeconds) {
             currentStep = 0;
             currentDay++;
+            if (currentDay <= totalSimulationDays) {
+                resetAccordingToListenersRequestsProgramsPlaylists();
+            }
             System.out.println("Наступил новый день симуляции: " + currentDay);
         }
     }

@@ -74,6 +74,12 @@ public class MusicLibrary {
         return musicTracks;
     }
 
+    public void resetTracksPopularity(){
+        for (MusicTrack track: musicTracks) {
+            track.resetPopularity();
+        }
+    }
+
     public int size() {
         return musicTracks.size();
     }

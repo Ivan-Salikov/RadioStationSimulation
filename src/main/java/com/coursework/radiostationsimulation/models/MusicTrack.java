@@ -85,6 +85,10 @@ public class MusicTrack {
         return popularity;
     }
 
+    public void resetPopularity() {
+        popularity = 0;
+    }
+
     public void incrementPopularity() {
         this.popularity++;
     }

@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -160,7 +161,8 @@ public class SimulationFormController implements Initializable {
         // Привязка данных к таблице запросов
         requestsTable.setItems(requestQueue.getRequests());
         completeRequestsTable.setItems(radioStation.getCompletedRequests());
-        accordingToListenersTable.setItems(radioPrograms);
+        FilteredList<RadioProgram> accordingToListenersRequestsPrograms = new FilteredList<>(radioPrograms, program -> program instanceof AccordingToListenersRequests);
+        accordingToListenersTable.setItems(accordingToListenersRequestsPrograms);
     }
 
     // Открывает окно для работы с фонотекой.
