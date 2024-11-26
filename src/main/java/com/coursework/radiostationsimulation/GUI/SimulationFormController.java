@@ -136,6 +136,7 @@ public class SimulationFormController implements Initializable {
         requestsCountLabel.setText("Запросы: " + requestQueue.size());
         completeRequestsLabel.setText("Выполненные запросы: " + completeRequestsTable.getItems().size());
 
+        mostRatedTracks.setText(radioStation.getTopRatedTracks());
         top5Genres.setText(radioStation.getGenrePopularity());
     }
 

@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class RadioStation {
@@ -236,6 +237,22 @@ public class RadioStation {
 
     public ObservableList<Request> getCompletedRequests() {
         return completedRequests;
+    }
+
+    public String getTopRatedTracks(){
+        StringBuilder topTracks = new StringBuilder("Самые рейтинговые произведения:\n");
+
+        AtomicInteger index = new AtomicInteger(1);
+
+        musicLibrary.getMusicTracks().stream()
+                .sorted(Comparator.comparingInt(MusicTrack::getPopularity).reversed())
+                .forEach(track -> topTracks.append(index.getAndIncrement())
+                        .append(". ")
+                        .append(track.toString())
+                        .append(" ("+ track.getGenre() + ")")
+                        .append("\n"));
+
+        return topTracks.substring(0, topTracks.length() - 1);
     }
 
     public String getGenrePopularity() {
