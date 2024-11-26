@@ -19,9 +19,6 @@ public class RadioStation {
 
     private boolean isRunning; // Флаг работы симуляции
 
-    private long lastRequestTime = 0;  // Для отслеживания времени между запросами
-    private static final long REQUEST_DELAY = 500;  // Задержка между обработкой запросов в миллисекундах (0.5 секунды)
-
     // Статистика по жанрам
     private final Map<Genre, Integer> genrePopularity;
 
@@ -62,7 +59,6 @@ public class RadioStation {
         }
     }
 
-
     public void startSimulation() {
         resetProgramsPlaylists();
         musicLibrary.resetTracksPopularity();
@@ -93,8 +89,10 @@ public class RadioStation {
 
         processRequests();
 
-        for (RadioProgram program : radioPrograms) {
-            System.out.println(program.getTrackListString());
+        for (RadioProgram program : radioPrograms){
+            if (program instanceof HitParade) {
+                ((HitParade) program).GenerateHitParadePlaylist(musicLibrary);
+            }
         }
 
         currentStep++;
@@ -163,6 +161,7 @@ public class RadioStation {
                         if (addedToProgram) {
                             completedRequests.add(request);
                             iterator.remove(); // Удаляем заявку, если она была обработана
+                            bestTrack.incrementPopularity();
                             incrementGenrePopularity(bestTrack.getGenre());
                             System.out.println("Обработана заявка на трек: " + bestTrack.getTitle());
                             isRequestProcessed = true;
@@ -171,7 +170,6 @@ public class RadioStation {
                     }
                 }
             }
-
             if (!isRequestProcessed) {
                 requestsToMove.add(request);  // Добавляем заявку в новый список
                 iterator.remove();  // Удаляем заявку из текущего положения
@@ -185,24 +183,6 @@ public class RadioStation {
         if (requestQueue.getRequests().size() == completedRequests.size()) {
             System.out.println("Нет подходящего трека для обработки заявок.");
         }
-    }
-
-
-
-    private MusicTrack findBestTrack(List<Request> requests) {
-        Map<MusicTrack, Integer> trackRequestCount = new HashMap<>();
-
-        for (Request request : requests) {
-            MusicTrack track = findTrackForRequest(request);
-            if (track != null) {
-                trackRequestCount.put(track, trackRequestCount.getOrDefault(track, 0) + 1);
-            }
-        }
-
-        return trackRequestCount.entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElse(null);
     }
 
     private boolean isDiverse(MusicTrack track, RadioProgram program) {

@@ -77,7 +77,7 @@ public class SimulationFormController implements Initializable {
     @FXML
     private TableColumn<RadioProgram, String> hitParadeGenreColumn;
     @FXML
-    private TableColumn<RadioProgram, String> hitParadeDurationColumn;
+    private TableColumn<RadioProgram, Integer> hitParadeDurationColumn;
     @FXML
     private TableColumn<RadioProgram, String> hitParadeTrackListColumn;
 
@@ -150,7 +150,6 @@ public class SimulationFormController implements Initializable {
         accordingToListenersNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
         accordingToListenersGenreColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGenre().toString()));
         accordingToListenersDurationColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getDuration()));
-
         accordingToListenersTrackListColumn.setCellValueFactory(data -> {
             String playlist = data.getValue().getTracks().stream()
                     .map(MusicTrack::toString)
@@ -158,11 +157,21 @@ public class SimulationFormController implements Initializable {
             return new SimpleStringProperty(playlist);
         });
 
+        hitParadeNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
+        hitParadeGenreColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGenre().toString()));
+        hitParadeDurationColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getDuration()));
+        hitParadeTrackListColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTrackListString()));
+
+
         // Привязка данных к таблице запросов
         requestsTable.setItems(requestQueue.getRequests());
         completeRequestsTable.setItems(radioStation.getCompletedRequests());
+
         FilteredList<RadioProgram> accordingToListenersRequestsPrograms = new FilteredList<>(radioPrograms, program -> program instanceof AccordingToListenersRequests);
         accordingToListenersTable.setItems(accordingToListenersRequestsPrograms);
+
+        FilteredList<RadioProgram> hitParadesPrograms = new FilteredList<>(radioPrograms, program -> program instanceof HitParade);
+        hitParadeTable.setItems(hitParadesPrograms);
     }
 
     // Открывает окно для работы с фонотекой.
@@ -291,6 +300,7 @@ public class SimulationFormController implements Initializable {
                 updateStatistics();
                 requestsTable.refresh();
                 accordingToListenersTable.refresh();
+                hitParadeTable.refresh();
             }
             else {
                 stopSimulation();

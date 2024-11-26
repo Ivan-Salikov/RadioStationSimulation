@@ -77,8 +77,8 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
                <columns>
-                  <TableColumn fx:id="requestTypeColumn" minWidth="115.0" prefWidth="115.0" resizable="false" text="Тип запроса" />
-                  <TableColumn fx:id="requestValueColumn" minWidth="170.0" prefWidth="174.39999237060545" resizable="false" text="Данные" />
+                  <TableColumn fx:id="requestTypeColumn" minWidth="115.0" prefWidth="115.0" text="Тип запроса" />
+                  <TableColumn fx:id="requestValueColumn" minWidth="170.0" prefWidth="174.39999237060545" text="Данные" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -100,8 +100,8 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
                <columns>
-                  <TableColumn fx:id="completeRequestTypeColumn" minWidth="115.0" prefWidth="115.0" resizable="false" text="Тип запроса" />
-                  <TableColumn fx:id="completeRequestValueColumn" minWidth="170.0" prefWidth="184.79998474121095" resizable="false" text="Данные" />
+                  <TableColumn fx:id="completeRequestTypeColumn" minWidth="115.0" prefWidth="115.0" text="Тип запроса" />
+                  <TableColumn fx:id="completeRequestValueColumn" minWidth="170.0" prefWidth="184.79998474121095" text="Данные" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

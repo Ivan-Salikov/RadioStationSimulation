@@ -79,6 +79,10 @@ public class RadioProgram {
     }
 
     public void addTrack(MusicTrack track) {
+        if (tracks.contains(track)) {
+            return;
+        }
+
         if (getTotalDuration() + track.getDuration() <= duration*60) {
             tracks.add(track);
         }
