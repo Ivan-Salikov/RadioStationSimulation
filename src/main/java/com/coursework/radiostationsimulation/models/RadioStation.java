@@ -12,6 +12,7 @@ public class RadioStation {
     private final ObservableList<RadioProgram> radioPrograms; // Радиопрограммы
     private final RequestQueue requestQueue; // Очередь запросов
     private final ObservableList<Request> completedRequests; // Завершенные запросы
+    private final HashSet<MusicTrack> playedTracksList;
 
     private int totalSimulationDays; // Длительность симуляции (в днях)
     private int simulationStepSeconds; // Шаг симуляции (в секундах)
@@ -28,6 +29,7 @@ public class RadioStation {
         this.radioPrograms = radioPrograms;
         this.requestQueue = requestQueue;
         this.completedRequests = FXCollections.observableArrayList();
+        this.playedTracksList = new HashSet<MusicTrack>();
         this.genrePopularity = new HashMap<>();
         this.isRunning = false;
 
@@ -161,6 +163,7 @@ public class RadioStation {
                         boolean addedToProgram = addTrackToRadioProgram(bestTrack);
                         if (addedToProgram) {
                             completedRequests.add(request);
+                            playedTracksList.add(bestTrack);
                             iterator.remove(); // Удаляем заявку, если она была обработана
                             bestTrack.incrementPopularity();
                             incrementGenrePopularity(bestTrack.getGenre());
@@ -237,6 +240,17 @@ public class RadioStation {
 
     public ObservableList<Request> getCompletedRequests() {
         return completedRequests;
+    }
+
+    public String getPlayedTracks(){
+        StringBuilder playedTracks = new StringBuilder("Список прозвучавших произведений:\n");
+
+        for (MusicTrack track: playedTracksList) {
+            playedTracks.append(track.toString())
+                    .append("\n");
+        }
+
+        return playedTracks.substring(0, playedTracks.length() - 1);
     }
 
     public String getTopRatedTracks(){
