@@ -221,34 +221,39 @@ public class SimulationFormController implements Initializable {
     // Запуск симуляции
     public void startSimulation() {
         try {
-            startSumulationMenuItem.setDisable(true);
+            if ((radioPrograms.size() >= 7 && radioPrograms.size() <= 12) && musicTracks.size() >= 2) {
+                startSumulationMenuItem.setDisable(true);
 
-            // Сброс таблицы запросов и очереди
-            requestQueue.clear();
+                // Сброс таблицы запросов и очереди
+                requestQueue.clear();
 
-            // Сброс количества запросов
-            requestsCountLabel.setText("Запросы: 0");
+                // Сброс количества запросов
+                requestsCountLabel.setText("Запросы: 0");
 
-            // Установка параметров симуляции
-            int duration = simulationDuration.getValue();
-            int step = simulationStep.getValue();
+                // Установка параметров симуляции
+                int duration = simulationDuration.getValue();
+                int step = simulationStep.getValue();
 
-            radioStation.configureSimulation(duration, step);
-            radioStation.startSimulation();
+                radioStation.configureSimulation(duration, step);
+                radioStation.startSimulation();
 
-            // Запуск таймера для выполнения simulateStep каждую секунду
-            simulationTimer = new Timeline(
-                    new KeyFrame(Duration.seconds(1), e -> simulateStep())
-            );
-            simulationTimer.setCycleCount(Timeline.INDEFINITE); // Будет работать бесконечно
-            simulationTimer.play(); // Запускаем таймер
+                // Запуск таймера для выполнения simulateStep каждую секунду
+                simulationTimer = new Timeline(
+                        new KeyFrame(Duration.seconds(1), e -> simulateStep())
+                );
+                simulationTimer.setCycleCount(Timeline.INDEFINITE); // Будет работать бесконечно
+                simulationTimer.play(); // Запускаем таймер
 
-            // Обновление статуса
-            updateStatistics();
-            isSimulationRunning = true;
+                // Обновление статуса
+                updateStatistics();
+                isSimulationRunning = true;
 
-            stopSimulationMenuItem.setDisable(false);
-            pauseSimulationCheckMenuItem.setDisable(false);
+                stopSimulationMenuItem.setDisable(false);
+                pauseSimulationCheckMenuItem.setDisable(false);
+            }
+            else {
+                showAlert("Ошибка конфигурации", "Недостаточно данных для старта симуляции", "Радиопрограмм должно быть от 7 до 12, а в фонотеке должно быть не менее 2 треков");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -310,5 +315,13 @@ public class SimulationFormController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private  void showAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
