@@ -17,7 +17,7 @@
 <GridPane hgap="20.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="982.0" vgap="5.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.coursework.radiostationsimulation.GUI.RadioProgramsFormController">
     <columnConstraints>
         <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="305.7999755859375" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="580.0000244140625" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="580.0000244140625" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="-Infinity" prefHeight="57.59998779296875" vgrow="SOMETIMES" />
@@ -61,10 +61,10 @@
         </HBox>
         <TableView fx:id="radioProgramsTable" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS">
          <columns>
-            <TableColumn fx:id="radioProgramNameColumn" prefWidth="75.0" text="Название" />
-            <TableColumn fx:id="radioProgramTypeColumn" prefWidth="75.0" text="Тип" />
-            <TableColumn fx:id="radioProgramGenreColumn" prefWidth="75.0" text="Жанр" />
-            <TableColumn fx:id="radioProgramDurationColumn" prefWidth="75.0" text="Длительность" />
+            <TableColumn fx:id="radioProgramNameColumn" maxWidth="500.0" minWidth="200.0" prefWidth="-1.0" text="Название" />
+            <TableColumn fx:id="radioProgramTypeColumn" minWidth="150.0" prefWidth="-1.0" text="Тип" />
+            <TableColumn fx:id="radioProgramGenreColumn" minWidth="150.0" prefWidth="-1.0" text="Жанр" />
+            <TableColumn fx:id="radioProgramDurationColumn" minWidth="100.0" prefWidth="-1.0" text="Длительность" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
