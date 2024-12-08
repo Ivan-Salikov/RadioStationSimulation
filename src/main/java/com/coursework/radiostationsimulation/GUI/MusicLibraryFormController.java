@@ -127,6 +127,7 @@ public class MusicLibraryFormController implements Initializable {
         musicLibraryTable.setItems(SimulationFormController.musicTracks.getMusicTracks());
     }
 
+    // Добавление нового трека в фонотеку
     public void addNewTrack() {
         String title = musicTrackName.getText();
         Genre genre = musicTrackGenre.getValue();
@@ -146,6 +147,7 @@ public class MusicLibraryFormController implements Initializable {
         }
     }
 
+    // Удаление выбранного трека
     public void deleteSelectedTrack() {
         MusicTrack selectedTrack = musicLibraryTable.getSelectionModel().getSelectedItem();
         if (selectedTrack != null) {
@@ -156,11 +158,12 @@ public class MusicLibraryFormController implements Initializable {
         }
     }
 
-    // Установка поиска
+    // Поиск трека
     public void searchTrack() {
         String searchTerm = searchField.getText().trim();
         String selectedCriteria = searchCriteriaComboBox.getValue();
 
+        // Фильтруем фонотеку в соответствие с выбранным критерием поиска
         FilteredList<MusicTrack> filteredList = new FilteredList<>(SimulationFormController.musicTracks.getMusicTracks(), track -> {
             if (searchTerm.isEmpty()) {
                 return true;
@@ -198,8 +201,7 @@ public class MusicLibraryFormController implements Initializable {
         musicLibraryTable.setItems(filteredList);
     }
 
-
-
+    // Очищаем форму ввода информации о треке
     private void clearFields() {
         musicTrackName.clear();
         musicTrackGenre.setValue(null);
@@ -210,6 +212,7 @@ public class MusicLibraryFormController implements Initializable {
         musicTrackDuration.getValueFactory().setValue(1);
     }
 
+    // Окно с предупреждением об ошибке
     private  void showAlert(String title, String header, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);

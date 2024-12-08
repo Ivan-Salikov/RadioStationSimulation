@@ -1,7 +1,6 @@
 package com.coursework.radiostationsimulation.GUI;
 
 import com.coursework.radiostationsimulation.models.*;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -102,12 +101,15 @@ public class SimulationFormController implements Initializable {
     @FXML
     private Label completeRequestsLabel;
 
+    // Список треков и радиопрограмм
     public static MusicLibrary musicTracks = new MusicLibrary();
     public static ObservableList<RadioProgram> radioPrograms = FXCollections.observableArrayList();
 
+    // Очередь запросов и радиостанция
     private RequestQueue requestQueue = new RequestQueue();
     private RadioStation radioStation;
 
+    // Переменные для работы с симуляцией
     private Timeline simulationTimer;
     private boolean isSimulationRunning = false;
 
@@ -120,9 +122,11 @@ public class SimulationFormController implements Initializable {
         simulationDuration.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7, 1)); // 1-7 дней
         simulationStep.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 30, 30)); // 10-1800 сек (по умолчанию 30)
 
+        // Обновляем данные в таблицах и статистику
         updateStatistics();
         bindRequestTable();
 
+        // Блокируем кнопку 'Стоп' и 'Пауза'
         stopSimulationMenuItem.setDisable(true);
         pauseSimulationCheckMenuItem.setDisable(true);
 
@@ -130,6 +134,7 @@ public class SimulationFormController implements Initializable {
         pauseSimulationCheckMenuItem.setOnAction(event -> togglePauseSimulation());
     }
 
+    // Обновление статистики
     private void updateStatistics() {
         musicTracksCountLabel.setText("Треки: " + musicTracks.getMusicTracks().size());
         radioProgramsCountLabel.setText("Радиопрограммы: " + radioPrograms.size());
@@ -169,9 +174,11 @@ public class SimulationFormController implements Initializable {
         requestsTable.setItems(requestQueue.getRequests());
         completeRequestsTable.setItems(radioStation.getCompletedRequests());
 
+        // Привязка данных к таблице программ по заявкам слушателей
         FilteredList<RadioProgram> accordingToListenersRequestsPrograms = new FilteredList<>(radioPrograms, program -> program instanceof AccordingToListenersRequests);
         accordingToListenersTable.setItems(accordingToListenersRequestsPrograms);
 
+        // Привязка данных к таблице хит-парадов
         FilteredList<RadioProgram> hitParadesPrograms = new FilteredList<>(radioPrograms, program -> program instanceof HitParade);
         hitParadeTable.setItems(hitParadesPrograms);
     }
@@ -190,7 +197,7 @@ public class SimulationFormController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Обновление меток после закрытия окна
+            // Обновление статистики после закрытия окна
             updateStatistics();
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,16 +218,66 @@ public class SimulationFormController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Обновление меток после закрытия окна
+            // Обновление статистики после закрытия окна
             updateStatistics();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // Информация о программе
+    public void showAboutDialog(){
+        Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
+        aboutAlert.setTitle("О программе");
+        aboutAlert.setHeaderText(null);
+        aboutAlert.setContentText("Курсовая работа: Симуляция составления программ на радиостанции\n"
+                + "Версия: 1.0\n"
+                + "Автор: студент группы 23ПИнж(б)РПиС-2 Саликов Иван\n"
+                + "Описание: Программа предназначена для симуляции работы радиостанции, "
+                + "включая составление хит-парадов и программ по заявкам слушателей.");
+        aboutAlert.showAndWait();
+    }
+
+    // Руководство пользователя
+    public void showGuideDialog() {
+        Alert guideAlert = new Alert(Alert.AlertType.INFORMATION);
+        guideAlert.setTitle("Руководство пользователя");
+        guideAlert.setHeaderText("Как пользоваться программой?");
+
+        TextArea guideText = new TextArea(
+                "1. Работа с фонотекой:\n"
+                        + "   - Перейдите в раздел 'Фонотека'.\n"
+                        + "   - Используйте кнопку 'Добавить' для добавления треков.\n"
+                        + "   - Выберите трек в таблице и используйте кнопку 'Удалить' для его удаления из фонотеки.\n"
+                        + "   - Введите в поле поиска нужную информацию, затем выберите тип поиска и нажмите кнопку 'Поиск' для поиска треков в фонотеке.\n\n"
+                        + "2. Работа с радиопрограммами:\n"
+                        + "   - Перейдите в раздел 'Радиопрограммы'.\n"
+                        + "   - Используйте кнопку 'Добавить' для добавления программ.\n"
+                        + "   - Выберите радиопрограмму в таблице и используйте кнопку 'Удалить' для её удаления.\n"
+                        + "   - Введите в поле поиска нужную информацию, затем выберите тип поиска и нажмите кнопку 'Поиск' для поиска радиопрограмм.\n\n"
+                        + "3. Симуляция:\n"
+                        + "   - Перейдите в раздел 'Симуляция'.\n"
+                        + "   - Предварительно добавьте от 7 до 12 радиопрограмм и минимум 2 трека.\n"
+                        + "   - Введите начальные параметры симуляции и нажмите на кнопку 'Старт' для запуска симуляции.\n"
+                        + "   - Для приостановки симуляции нажмите кнопку 'Пауза', для возобновления симуляции нажмите не неё ещё раз.\n"
+                        + "   - Для остановки симуляции нажмите кнопку 'Стоп'."
+        );
+        guideText.setEditable(false);
+        guideText.setWrapText(true);
+
+        guideText.setMaxWidth(Double.MAX_VALUE);
+        guideText.setMaxHeight(Double.MAX_VALUE);
+
+        DialogPane dialogPane = guideAlert.getDialogPane();
+        dialogPane.setContent(guideText);
+
+        guideAlert.showAndWait();
+    }
+
     // Запуск симуляции
     public void startSimulation() {
         try {
+            // Проверяем достаточно ли радиопрограмм и треков для запуска симуляции
             if ((radioPrograms.size() >= 7 && radioPrograms.size() <= 12) && musicTracks.size() >= 2) {
                 startSumulationMenuItem.setDisable(true);
 
@@ -300,10 +357,11 @@ public class SimulationFormController implements Initializable {
     // Шаг симуляции (вызывается через таймер)
     public void simulateStep() {
         try {
+            // Проверяем не закончилась ли симуляция
             if (radioStation.canContinueSimulation()) {
-                radioStation.simulateStep();
+                radioStation.simulateStep(); // симуляция шага
 
-                // Обновление таблицы запросов
+                // Обновление статистики
                 updateStatistics();
                 requestsTable.refresh();
                 accordingToListenersTable.refresh();
@@ -317,6 +375,7 @@ public class SimulationFormController implements Initializable {
         }
     }
 
+    // Окно с предупреждением об ошибке
     private  void showAlert(String title, String header, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);

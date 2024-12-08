@@ -47,10 +47,10 @@
                                 <MenuItem fx:id="stopSimulationMenuItem" mnemonicParsing="false" onAction="#stopSimulation" text="Стоп" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Помощь">
+                        <Menu mnemonicParsing="false" text="Справка">
                             <items>
-                                <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="О программе" />
-                                <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" text="Руководство" />
+                                <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#showAboutDialog" text="О программе" />
+                                <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" onAction="#showGuideDialog" text="Руководство" />
                             </items>
                         </Menu>
                     </menus>

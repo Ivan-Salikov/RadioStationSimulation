@@ -94,6 +94,7 @@ public class RadioProgramsFormController implements Initializable {
         radioProgramsTable.setItems(SimulationFormController.radioPrograms);
     }
 
+    // Добавление новой радиопрограммы
     public void addNewRadioProgram() {
         String name = radioProgramName.getText();
         String type = radioProgramType.getValue();
@@ -124,6 +125,7 @@ public class RadioProgramsFormController implements Initializable {
         }
     }
 
+    // Удаление выбранной радиопрограммы
     public void deleteSelectedRadioProgram() {
         RadioProgram selectedRadioProgram = radioProgramsTable.getSelectionModel().getSelectedItem();
         if (selectedRadioProgram != null) {
@@ -134,11 +136,12 @@ public class RadioProgramsFormController implements Initializable {
         }
     }
 
-    // Установка поиска
+    // Поиск радиопрограммы
     public void searchRadioProgram() {
         String searchTerm = searchField.getText().trim();
         String selectedCriteria = searchCriteriaCombobox.getValue();
 
+        // Фильтруем программы в соответствие с выбранным критерием поиска
         FilteredList<RadioProgram> filteredList = new FilteredList<>(SimulationFormController.radioPrograms, program -> {
             if (searchTerm.isEmpty()) {
                 return true;
@@ -165,6 +168,7 @@ public class RadioProgramsFormController implements Initializable {
         radioProgramsTable.setItems(filteredList);
     }
 
+    // Очищение формы ввода информации о радиопрограмме
     private void clearFields() {
         radioProgramName.clear();
         radioProgramType.setValue(null);
@@ -172,6 +176,7 @@ public class RadioProgramsFormController implements Initializable {
         radioProgramDuration.getValueFactory().setValue(1);
     }
 
+    // Окно с предупреждением об ошибке
     private  void showAlert(String title, String header, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
