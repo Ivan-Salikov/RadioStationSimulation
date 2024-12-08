@@ -85,10 +85,12 @@ public class MusicTrack {
         return popularity;
     }
 
+    // Сброс популярности трека
     public void resetPopularity() {
         popularity = 0;
     }
 
+    // Увеличение популярности трека
     public void incrementPopularity() {
         this.popularity++;
     }

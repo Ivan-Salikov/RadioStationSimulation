@@ -78,6 +78,7 @@ public class RadioProgram {
                 .collect(Collectors.joining("; "));
     }
 
+    // Добавление трека в плейлист
     public void addTrack(MusicTrack track) {
         if (tracks.contains(track)) {
             return;
@@ -88,10 +89,12 @@ public class RadioProgram {
         }
     }
 
+    // Проверка завершения программы
     public boolean isComplete() {
         return getTotalDuration() >= duration*60;
     }
 
+    // Сброс плейлиста програмы
     public void clearPlaylist(){
         tracks.clear();
     }

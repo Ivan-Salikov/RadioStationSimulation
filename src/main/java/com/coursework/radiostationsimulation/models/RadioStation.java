@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 public class RadioStation {
     private final MusicLibrary musicLibrary; // Фонотека
     private final ObservableList<RadioProgram> radioPrograms; // Радиопрограммы
@@ -24,6 +23,7 @@ public class RadioStation {
     // Статистика по жанрам
     private final Map<Genre, Integer> genrePopularity;
 
+    // Конструктор
     public RadioStation(MusicLibrary musicLibrary, ObservableList<RadioProgram> radioPrograms, RequestQueue requestQueue) {
         this.musicLibrary = musicLibrary;
         this.radioPrograms = radioPrograms;
@@ -39,6 +39,7 @@ public class RadioStation {
         }
     }
 
+    // Настройка начальных параметров симуляции
     public void configureSimulation(int totalSimulationDays, int simulationStepSeconds) {
         this.totalSimulationDays = totalSimulationDays;
         this.simulationStepSeconds = simulationStepSeconds;
@@ -47,6 +48,7 @@ public class RadioStation {
 
     }
 
+    // Сброс плейлистов программ
     private void resetProgramsPlaylists(){
         for (RadioProgram program: radioPrograms) {
             program.clearPlaylist();
@@ -54,6 +56,7 @@ public class RadioStation {
         }
     }
 
+    // Сброс плейлистов программ по заявкам слушателей
     private void resetAccordingToListenersRequestsProgramsPlaylists(){
         for (RadioProgram program: radioPrograms) {
             if (program instanceof AccordingToListenersRequests) {
@@ -62,6 +65,7 @@ public class RadioStation {
         }
     }
 
+    // Запуск симуляции
     public void startSimulation() {
         resetProgramsPlaylists();
         musicLibrary.resetTracksPopularity();
@@ -73,15 +77,18 @@ public class RadioStation {
         System.out.println("Симуляция началась!");
     }
 
+    // Остановка симуляции
     public void stopSimulation() {
         isRunning = false;
         System.out.println("Симуляция остановлена.");
     }
 
+    // Проверка: завершилась ли симуляция
     public boolean canContinueSimulation() {
         return isRunning && currentDay <= totalSimulationDays;
     }
 
+    // Симуляция шага (примерно 1 секунда)
     public void simulateStep() {
         if (!canContinueSimulation()) {
             stopSimulation();
@@ -109,6 +116,7 @@ public class RadioStation {
         }
     }
 
+    // Случайная генерация запросов
     private void generateRequests(){
         int maxRequests = musicLibrary.size();
         Random random = new Random();
@@ -124,11 +132,13 @@ public class RadioStation {
         System.out.println("Сгенерировано запросов: " + newRequestsCount);
     }
 
+    // Случайная генерация типа запроса
     private String generateRandomRequestType() {
         String[] requestTypes = {"Track", "Author", "Album", "Artist"};
         return requestTypes[new Random().nextInt(requestTypes.length)];
     }
 
+    // Случайная генерация значения запроса
     private String generateRandomRequestValue(String requestType) {
         Random random = new Random();
         switch (requestType) {
@@ -145,6 +155,7 @@ public class RadioStation {
         }
     }
 
+    // Обработка запросов
     private void processRequests() {
         List<Request> requestsToMove = new ArrayList<>();
         Iterator<Request> iterator = requestQueue.getRequests().iterator();
@@ -152,7 +163,7 @@ public class RadioStation {
         while (iterator.hasNext()) {
             Request request = iterator.next();
             boolean isRequestProcessed = false;
-            MusicTrack bestTrack = findTrackForRequest(request);
+            MusicTrack bestTrack = findTrackForRequest(request); // находим наиболее подходящий под запрос трек
 
             if (bestTrack != null) {
                 for (RadioProgram program : radioPrograms) {
@@ -189,10 +200,12 @@ public class RadioStation {
         }
     }
 
+    // Проверяем разнообразие плейлиста
     private boolean isDiverse(MusicTrack track, RadioProgram program) {
         return !track.getArtist().equals(program.getLastPlayedArtist());
     }
 
+    // Добавление трека в программу
     private boolean addTrackToRadioProgram(MusicTrack track) {
         for (RadioProgram program : radioPrograms) {
             if (Objects.equals(program.getType(), "По заявкам слушателей")
@@ -207,6 +220,7 @@ public class RadioStation {
         return false;
     }
 
+    // Поиск трека для запроса
     private MusicTrack findTrackForRequest(Request request) {
         switch (request.getType()) {
             case "Track":
@@ -230,6 +244,7 @@ public class RadioStation {
         }
     }
 
+    // Увеличение популярности трека
     private void incrementGenrePopularity(Genre genre) {
         genrePopularity.put(genre, genrePopularity.getOrDefault(genre, 0) + 1);
     }
@@ -242,6 +257,7 @@ public class RadioStation {
         return completedRequests;
     }
 
+    // Статистика по проигранным трекам
     public String getPlayedTracks(){
         StringBuilder playedTracks = new StringBuilder("Список прозвучавших произведений:\n");
 
@@ -253,6 +269,7 @@ public class RadioStation {
         return playedTracks.substring(0, playedTracks.length() - 1);
     }
 
+    // Топ самых популярных треков
     public String getTopRatedTracks(){
         StringBuilder topTracks = new StringBuilder("Самые рейтинговые произведения:\n");
 
@@ -269,6 +286,7 @@ public class RadioStation {
         return topTracks.substring(0, topTracks.length() - 1);
     }
 
+    // Топ 5 жанров
     public String getGenrePopularity() {
         StringBuilder genresPopularityStatistics = new StringBuilder("Топ 5 жанров:\n");
 

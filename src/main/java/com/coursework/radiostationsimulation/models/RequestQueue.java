@@ -6,14 +6,17 @@ import javafx.collections.ObservableList;
 public class RequestQueue {
     private ObservableList<Request> requests;
 
+    // Конструктор
     public RequestQueue() {
         this.requests = FXCollections.observableArrayList();
     }
 
+    // Добавление запроса
     public void addRequest(Request request) {
         requests.add(request);
     }
 
+    // Обработка запроса
     public Request processRequest() {
         if (!requests.isEmpty()) {
             return requests.remove(0); // Удаляет и возвращает первый запрос в очереди
@@ -26,11 +29,11 @@ public class RequestQueue {
         return requests.remove(request); // Удаляет запрос из очереди
     }
 
-
     public ObservableList<Request> getRequests() {
         return requests;
     }
 
+    // Сброс запросов
     public void clear() {
         requests.clear(); // Очистка списка запросов
     }

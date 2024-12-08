@@ -23,6 +23,7 @@ public class MusicLibrary {
         musicTracks.remove(track);
     }
 
+    // Возврат случайного трека
     public MusicTrack getRandomTrack() {
         if (musicTracks.isEmpty()) return null;
         return musicTracks.get((int) (Math.random() * musicTracks.size()));
@@ -74,6 +75,7 @@ public class MusicLibrary {
         return musicTracks;
     }
 
+    // Сброс рейтинга треков
     public void resetTracksPopularity(){
         for (MusicTrack track: musicTracks) {
             track.resetPopularity();
