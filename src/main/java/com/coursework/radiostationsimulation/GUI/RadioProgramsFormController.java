@@ -132,7 +132,7 @@ public class RadioProgramsFormController implements Initializable {
             SimulationFormController.radioPrograms.remove(selectedRadioProgram);
         }
         else {
-            showAlert("Ошибка удаления", "Нет выбора", "Выберите трек для удаления.");
+            showAlert("Ошибка удаления", "Нет выбора", "Выберите программу для удаления.");
         }
     }
 
